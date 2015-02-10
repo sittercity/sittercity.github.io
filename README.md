@@ -27,3 +27,20 @@ categories: jekyll update
 comments: true
 ---
 ```
+
+## Process for adding posts
+
+* Create a branch for yourself and add your incredibly insightful post (or posts).
+* Create a PR pointing back to master
+
+That's it! We'll all talk about your additions and decide on when it should be merged.
+
+Once it's merged to master there is another process to follow before it is served
+live to the public but that will be covered in a separate (and as yet nonexistent)
+section.
+
+## TODO
+
+* Make this look a little nicer
+* Update the index page so it doesn't show all posts but maybe just the last 5 or so
+* Create an archive page to house anything not shown on the front page
