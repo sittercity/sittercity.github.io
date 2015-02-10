@@ -1,6 +1,7 @@
 ## Local setup
-Install jekyll gem: `gem install jekyll`
-Clone this repo down
+* Install jekyll gem: `gem install jekyll`
+* You'll need nodejs if you don't already it: `sudo apt-get install nodejs`
+* Clone this repo
 
 ## Running
 To run this locally, use: `jekyll serve`
