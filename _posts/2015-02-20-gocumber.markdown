@@ -9,24 +9,29 @@ author: "Phil Trimble - ptrimble@sittercity.com"
 
 This month Sittercity Tech has released a new project on github: [gocumber!](https://github.com/sittercity/gocumber "gocumber")
 
-So what is gocumber (besides a goofy name)? Gocumber is a package written in Go that is used for **parsing and executing Gherkin steps**. It was created while we were writing our first Go service here at Sittercity. It is an attempt to build a Cucumber/JBehave-like tool for Go.
+So what is gocumber (besides a goofy name)? Gocumber is a package written in Go that is used for **parsing and executing [Gherkin](https://cukes.info/gherkin.html)**. It was created while we were writing our first Go service here at Sittercity. Perhaps unsurprisingly based on its name it is an attempt to build a Cucumber-like tool for Go.
 
-To understand why it was necessary it will help to understand a bit about how we develop. We are a very opinionated [TDD](http://en.wikipedia.org/wiki/Test-driven_development "Test-Driven Development") shop. We believe very strongly in the test-first mantra. What this means in practice is: 
+To understand why it was necessary it will help to understand a bit about how we develop.
 
-1. Write Gherkin features as a group to lay out our desired behavior. This is done before any code is written or even a git repository is initialized.
-1. Set up our project and pull in all of our desired libraries
-1. Begin implementing the Gherkin steps until we can run our features (with failures since nothing is implemented)
-1. Start implementing in code
+## Why do we need this?
+Sittercity is a very opinionated [TDD](http://en.wikipedia.org/wiki/Test-driven_development "Test-Driven Development") shop. We believe very strongly in the test-first mantra. What this means in practice while developing a project is: 
+
+1. We write Gherkin features as a group to lay out our desired behavior. This is done before any code is written or even a git repository is initialized.
+1. We then set up our project and pull in all of our desired libraries
+1. Next we begin implementing the Gherkin steps until we can run our features (with failures since nothing is implemented)
+1. Lastly we start implementing in code
 
 The last step there also involves unit testing but I'll leave that out for the time being. Rest assured no code is written until we have a lot of failing tests.
 
-All of this meant that the first order of business after our Gherkin features were written was picking our testing tools. The go standard library has a pretty robust [unit testing](http://golang.org/pkg/testing/) package that seemed to offer what we needed but we quickly realized that there was nothing out there that provided what we needed for our Gherkin features.
+## Okay, so you like to test. Now what?
+All of this meant that the first order of business after our Gherkin features were written was picking our testing tools. The go standard library has a pretty robust [testing](http://golang.org/pkg/testing/) package that seemed to offer what we needed but we quickly realized that there was nothing out there that provided what we needed for our Gherkin features.
 
-In our other Ruby-based projects we have used [cucumber](https://cukes.info/). We needed some way to parse and execute our Gherkin features. We found a few options but they were either not actively developed or half-implemented. We decided to take a first stab at implementing what we needed ourselves and see where it took us.
+Currently at Sittercity we mostly have applications written in Ruby. This means that most of our other projects use [cucumber](https://cukes.info/). But since we are expanding into Go we needed some way to parse and execute our Gherkin features. We found a few options but they were either not actively developed or half-implemented. We decided to take a first stab at implementing what we needed ourselves and see where it took us.
 
 For starters we needed some way to parse the Gherkin itself. Luckily we found the [go-gherkin](https://github.com/muhqu/go-gherkin) package from [muhqu](https://github.com/muhqu). This allowed us to concentrate on creating an interface to execute steps and access variables.
 
-So what does this interface look like? Let's start with some simple gherkin:
+## Gocumber Example
+So what does this interface look like in code? Let's start with some simple gherkin:
 
 {% highlight gherkin %}
 Feature: gocumber example feature
@@ -65,17 +70,22 @@ func TestYourStuff(t *testing.T) {
 }
 {% endhighlight %}
 
-This is a contrived example but you can see the basics. Here we create the step definitions and implement our desired behavior. You can see a more complete example in our [git repository](https://github.com/sittercity/gocumber) under the 'example' directory.
+This is a contrived example but you can see the basics. Here we create the step definitions and implement our desired behavior. If you forget to implement a step then you'll receive an error when running your tests, just like in Cucumber. All of the steps are then executed at the end with the 'step.Run()' function.
+
+You can see a more complete example in our [git repository](https://github.com/sittercity/gocumber) under the 'example' directory.
 
 Now we have a gherkin tool to execute our tests! We were off and running. We've successfully implemented our first Golang project and are spinning up a few more. In the near future we'll be rolling this tool into multiple projects, following much the same pattern as above.
 
-So now that the tool is available where do we go from here? Well, we have a few missing pieces of fucntionality that we have not yet neeed to use internally and so have not implemented, such as:
+## What's missing?
+So now that the tool is available where do we go from here? Well, we have a few missing pieces of functionality that we have not yet needed to use internally and so have not implemented, such as:
 
-1. Does not process the Gherkin backgrounds
+1. Does not process Gherkin backgrounds
 1. Only performs variable replacement using data tables in outlines, not in text (like json)
 
 We plan to add in these features as we encounter situations that require them in our upcoming internal projects. But we strongly believe in only engineering a solution when the need arises so we're not in any rush.
 
 We would love to hear feedback! Feel free to file issues and/or provide PRs to add functionality.
+
+P.S. - I don't remember how we came up with this terrible name. I imagine it was said as a joke at first but then stuck. You're welcome!
 
 *Comments? Questions? Want to point out a mistake? Leave a comment below or contact the author at ptrimble AT sittercity DOT com*
