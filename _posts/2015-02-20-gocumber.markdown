@@ -7,7 +7,7 @@ comments: true
 author: "Phil Trimble"
 ---
 
-This month Sittercity Tech has released a new project on github: [gocumber!](https://github.com/sittercity/gocumber "gocumber")
+This month Sittercity Tech has released a new project on Github: [gocumber!](https://github.com/sittercity/gocumber "gocumber")
 
 So what is gocumber (besides a goofy name)? Gocumber is a package written in Go that is used for **parsing and executing [Gherkin](https://cukes.info/gherkin.html)**. It was created while we were writing our first Go service here at Sittercity. Perhaps unsurprisingly based on its name it is an attempt to build a Cucumber-like tool for Go.
 
@@ -58,11 +58,11 @@ func TestYourStuff(t *testing.T) {
     // name, like so: user_name := matches[1]
   })
 
-  steps.When(`I deactivate the user named "(.*)"`, func(matches []string, _gocumber.StepNode) {
+  steps.When(`I deactivate the user named "(.*)"`, func(matches []string, _ gocumber.StepNode) {
     // your code to deactivate the specific user found in 'matches[1]'
   })
 
-  steps.Then(`the user "(.*)" should be deactivated`, func(matches[]string, _ gocumber.StepNode) {
+  steps.Then(`the user "(.*)" should be deactivated`, func(matches []string, _ gocumber.StepNode) {
     // your code to check that the user in 'matches[1]' is deactivated
   })
 
