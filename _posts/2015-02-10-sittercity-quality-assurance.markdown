@@ -2,7 +2,7 @@
 layout: post
 title:  "Sittercity Quality Assurance"
 date:   2015-02-10 03:45:22
-categories: jekyll update
+categories: qa
 comments: true
 author: "Bob Vonderau"
 ---
@@ -52,9 +52,9 @@ We are able to accomplish all of this with a variety of tools and processes.
 
 ![Sittercity QA](/assets/qa_tools.jpg)
 
- - [Cucucmber](https://cukes.info/) has been an excellent acceptance criteria framework used across our product and development teams to describe desired functionality.  These are easily translated into unit and full stack acceptance tests that the development and QA team can build and maintain.
+ - [Cucumber](https://cukes.info/) has been an excellent acceptance criteria framework used across our product and development teams to describe desired functionality.  These are easily translated into unit and full stack acceptance tests that the development and QA team can build and maintain.
  - [Calabash](http://calaba.sh/) is used for our automated mobile testing.  It can be used across iOS and Android platforms.  It is tightly integrated with Cucumber.
- - [WatirWebdriver](http://watirwebdriver.com/) is the engine behind our full stack Cucucmber tests.  WatirWebdriver allows our tests to run in actual browsers, locally or using cloud based virtual machines.
+ - [WatirWebdriver](http://watirwebdriver.com/) is the engine behind our full stack Cucumber tests.  WatirWebdriver allows our tests to run in actual browsers, locally or using cloud based virtual machines.
  - [BrowserStack](www.browserstack.com) is used to run our regression test suite in parallel, against many different browsers simultaneously.  This allows us to speed up testing by running multiple test scenarios against different browers at the same time.
  - [Applitools](https://applitools.com/) is a new tool in our testing arsenel.  This allows us to do machine based UI testing, allowing us to test pixel level differences between pages.  QA engineers no longer have to manually inspect each page, on every release.
 
