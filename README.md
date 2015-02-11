@@ -42,5 +42,3 @@ section.
 ## TODO
 
 * Make this look a little nicer
-* Update the index page so it doesn't show all posts but maybe just the last 5 or so
-* Create an archive page to house anything not shown on the front page
