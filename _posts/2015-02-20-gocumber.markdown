@@ -4,7 +4,7 @@ title:  "Gocumber"
 date:   2015-02-20 09:00:00
 categories: golang
 comments: true
-author: "Phil Trimble - ptrimble@sittercity.com"
+author: "Phil Trimble"
 ---
 
 This month Sittercity Tech has released a new project on github: [gocumber!](https://github.com/sittercity/gocumber "gocumber")
