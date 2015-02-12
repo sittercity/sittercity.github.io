@@ -87,5 +87,3 @@ We plan to add in these features as we encounter situations that require them in
 We would love to hear feedback! Feel free to file issues and/or provide PRs to add functionality.
 
 P.S. - I don't remember how we came up with this terrible name. I imagine it was said as a joke at first but then stuck. You're welcome!
-
-*Comments? Questions? Want to point out a mistake? Leave a comment below or contact the author at ptrimble AT sittercity DOT com*
