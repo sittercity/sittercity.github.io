@@ -36,7 +36,7 @@ class CreateUser
 
   def call(first_name, last_name, email)
     user = @repo.create(first_name, last_name, email)
-    @mailer.welcome_email(first_name, email)
+    @mailer.welcome_email(user.first_name, user.email)
     user
   end
 
@@ -87,15 +87,49 @@ Using Dependency Injection to instantiate the contexts or commands that manage y
 
 ## Factories
 
-In the same way that we used a repository to consolidate all ActiveRecord method calls in one class, it's a good idea to consolidate all of your contexts inside a single file.  At SitterCity, we write factory classes that are responsible for instantiating our contexts.  We adopt the convention of keeping these factories as modules rather than as full-fledged classes.
+In the same way that we used a repository to consolidate all ActiveRecord method calls in one class, it's a good idea to consolidate all of your contexts inside a single file. A factory, often called a
+constructor, has a pretty simlple job: contruct instances of classes.  So we'll use our factory to take care of doing actually injecting in our dependencies to the contexts we want to call.  That way,
+the classes that want to execute the context don't need to worry about the other classes that might be required for that context--all they need to know is how what method to call on the context (in our
+case it's "call").
+
+Among all the different classes we've created, our UserFactory alone is the only class that actually requires all the classes that we care about. It needs to require the files for the User model, the
+mailer, the repository, and the entity classes.  One consequence of requiring all these files is that the tests for the Factory tend to run a slower than when we’re testing classes that get to
+dependencies passed on initialization (but they'll still be faster than if we booted up the entire app).
+
+Out tests for the factory are pretty basic.  Since the factory only creates new instances of things, we just need to verify that it’s working properly.  Something like this should be sufficient for a unit test.
 
 {% highlight ruby %}
 
-module UserFactory
-                                                                    
-  def self.create_user
-    CreateUser.new(ARUserRepository.new, UserMailer.new)
+describe UserFactory do
+
+  it 'constructs a create_user context' d
+      expect(
+     described_class.create_user
+     ).to be_a CreateUser
   end
+
+end
+
+{% endhighlight %}
+
+You might notice that this doesn't look exactly like a typical test for a ruby class.  At SitterCity, we write factory classes that are responsible for instantiating our contexts.  We adopt the convention of keeping these factories as modules rather than as full-fledged classes.
+
+In order to make this test pass, we would end up writing the following code for our factory.
+
+{% highlight ruby %}
+
+require ‘create_user’
+require ‘mailer’
+require ‘AR_user_repository’
+
+module UserFactory
+
+   self.create_user
+    CreateUser.new(ARUserRepository.new, UserMailer.new)
+   end
+
+
+  private
 
 end
 

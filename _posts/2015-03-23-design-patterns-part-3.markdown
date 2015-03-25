@@ -10,13 +10,12 @@ categories: design patters, testing, software architecture
 
 #Part III: Putting it all together
 
-In the last installment, we talked about using the Command Pattern to store our business logic and leveraging Dependency Injection to load in all of our collaborator classes.  In the first installment, we had centralized all of our ORM-specific code into a repository that returned instances of our custom entity.
+In the last installment, we talked about using the Command Pattern to manage our business logic and leveraging Dependency Injection to load in all of our collaborator classes.  Inside our command, or context, we made a call to our repository.  We talked about what a repository in Part I.  It centralizeis all of our ORM-specific code into a single class that returned instances of our custom entity.
 
-##Tying up Loose Ends
+## Loose Ends
 
-The original implementation of our repository didn’t use dependency injection, but now that we undstand it’s benefits, we may as well update our repository.  
-
-Here’s how we originally setup the repository.
+The original implementation of our repository didn’t use dependency injection.  That's because I wanted to focus on explaining exactly what a repository class is and how it works with an entity class.
+Here's what our first pass at a repository looked like.
 
 {% highlight ruby %}
 
@@ -37,7 +36,8 @@ end
 {% endhighlight %}
 
 
-I wrote it this way so that I could highlight the how the repository and entity work together, but now that we understand that, we may as well make this a full-fledged repository.  There are two classes that the repository depends on: the user model and our entity class.  Let’s revise our repository to inject those two dependencies into the “initialize” method.
+There are two classes that the repository depends on: the user model and our entity class.  Let’s revise our repository to inject those two dependencies.  To do this, we'll just override the default
+"initialize" method that belongs to any Ruby class.
 
 
 {% highlight ruby %}
@@ -68,12 +68,13 @@ end
 {% endhighlight %}
 
 
-Now, there’s still some big stuff left out of this repository.  For instance, we’re not doing any error handling and the only the the repository can do is to create users.  But the main structure and intent of the repository should be clear.
+Now, there’s still some big stuff left out of this repository.  For instance, we’re not doing any error handling and the only thing this repository can do is to create users.  But the main stucture
+of the repository should be clear.
 
 
 ##The Call Chain
 
-Now that we’ve got this giant collection of design patterns all working on concert, let’s walk through how they all interact.  At SitterCity we would test this everything is wired up correctly by using a Cucumber test.  Before we wrote any repository, entity, context, or factory, we would write a Cucumber tests that captured the process of creating a user.  That test would remain failing until we’d implemented everything else.  Afterwards, it should pass.  
+Now that we’ve got this giant collection of design patterns all working on concert, let’s walk through how they all interact.  At SitterCity we would test that everything is wired up correctly by using a Cucumber test.  Before we wrote any repository, entity, context, or factory, we would write a Cucumber tests that captured the process of creating a user.  That test would remain failing until we’d implemented everything else.  Afterwards, it should pass.  
 
 Here’s what we’d see if we were dissecting the call chain.  Inside the controller, we’d see this:
 
@@ -93,42 +94,38 @@ end
 {% endhighlight %}
 
 
+The controller is doing two things. First, it's using the UserFactory to instantiate a our CreateUser context.  Second, it's executing the context, by using the "call" method and passing along the
+appropriate arguments.
 
-And UserFactory would be the only place that actually requires all the classes that we care about, such as the User model, the mailer, the repository, and the entity.  One consequence of requiring all these files is that the tests for the Factory tend to run a slower than when we’re testing classes that get to dependencies passed on initialization.
+Let's dig int this first operation, where the factory constructs our context for us. Here's what he had origally written.
 
-Out tests for the factory are pretty basic.  Since the factory only creates new instances of things, we just need to verify that it’s working properly.  Something like this should be sufficient for a unit test.
 
 {% highlight ruby %}
 
-describe UserFactory do
+module UserFactory
 
-  it 'constructs a create_user context' d
-      expect(
-     described_class.create_user
-     ).to be_a CreateUser
-  end
+   self.create_user
+    CreateUser.new(ARUserRepository.new, UserMailer.new)
+   end
+
+
+  private
 
 end
 
 {% endhighlight %}
 
 
-In order to make this test pass, we would end up writing the following code for our factory.
+But we've changed the repository so that it too is using dependency injection.  So our final factory might look more like this.
 
 
 {% highlight ruby %}
-
-require ‘create_user’
-require ‘user_entity’
-require ‘mailer’
-require ‘AR_user_repository’
 
 module UserFactory
 
    self.create_user
      CreateUser.new(user_repository, mailer)
    end
-
 
   private
 
@@ -153,9 +150,10 @@ end
 {% endhighlight %}
 
 
-The factory is the lynchpin for the whole operation.  That’s where we inject our custom classes with the real live collaborator classes they rely on (as opposed to the mocks we used in testing).
+The factory is the lynchpin for the whole operation.  That’s where we all of our contexts get created with their real, live, collaborator classes (as opposed to the mocks we used in testing).
 
-When the controller calls the context constructed by this factory, we’ll get to see our business logic executed.  In this case our business logic consists of creating a user in the database and sending a “welcome” email.  
+Now that our controller has an instance of our CreateUser context in it's handsl, let's take a look at what code is executed when the controller calls our context. In this case our business logic consists of creating a user in the database and sending
+a “welcome” email. Let's take a look at what code is executed when the controller calls our context. 
 
 
 {% highlight ruby %}
@@ -168,7 +166,7 @@ class CreateUser
 
   def call(first_name, last_name, email)
     user = user_repository.create(first_name, last_name, email)
-    mailer.welcome_email(first_name, email)
+    mailer.welcome_email(user.first_name, user.email)
     user
   end
 
@@ -180,8 +178,8 @@ end
 
 {% endhighlight %}
 
-Looking inside the call method, we can see that our context uses our repository, which has a pretty generic method called “create” and returns instances of our entity class. 
-
+Looking inside the call method, we can see that our context uses our repository, which has a pretty generic method called “create.”  The context expects that calling the "create" method will return some
+object that it can call "first_name" and "email" on.  We know that object is our custom entity class. 
 
 
 {% highlight ruby %}
@@ -211,21 +209,33 @@ end
 
 {% endhighlight %}
 
-Our call chain starts in the controller, which relies on the factory to create an instance of our context.  Our controller then calls that context, being sure to pass it the appropriate arguments.  Inside our context, we pass along the user attributes to our repository.  Our repository relies on an ORM to create the record in the database and we take the result of that process and wrap it into our custom entity.  
+Our call chain starts in the controller, which relies on the factory to create an instance of our context.  Our controller then calls that context, being sure to pass it the appropriate arguments.
+Inside our context, we pass along the user attributes to our repository.  Our repository relies on an ORM (in this case, ActiveRecord) to create the record in the database and we take the result of that process and wrap it into our custom entity.  
 
 ##Why?
 
-So now the big question is “Why would we ever to through all that trouble, when Rails makes it so much easier to create a user?” 
+So even if we understand this elaborate call chain, we may have one lingering question, which is “Why would we ever to through all that trouble when Rails makes it so much easier to create a user?” 
 
-The only good answer is: it depends.
+The answer is: it depends. We might want it.  We might not want it.
 
-Whether it makes sense to use all these patterns together depends on what you’re building.  If you’re in a 24 hour hackathon, you should just write your code as quickly as possible.  Or if you’re taking a few days to crank out an MVP, then go ahead of an just write an idiomatic Rails app.  Once you’ve validated your idea, then it may be time to bring out the big guns and start using all these design patterns.  At SitterCity, we’re supporting a decade’s worth of business requirements and we’re adding new features every week.  As a web app ages, entropy tends to seep in from the edges.  By using the collection of design patterns outlined here, SitterCity has managed to minimize the effects of that entropy.  This approach makes sense for us, but you should understand your own business requirements and goals when considering whether this is right for you.
+Whether it makes sense to use all these patterns together depends on what you’re building.  If you’re in a 24 hour hackathon, should just write your
+code as quickly as possible.  You shouldn't worry about all these design pattens.  Or, if you’re taking a few days to crank out an MVP, then go
+ahead of an just write an idiomatic Rails app.  Once you’ve validated your idea, then it's time to think about how you're going to architect your
+app for the long term.  Using these design patterns makes sense for us, but you should understand your own business requirements and goals when considering whether this is right for you.
 
-Here are some of the benefits from adopting this approach:
+So when you're weighing wether to use this constellation of design patterns, weigh the effors with writing factories, contexts, repositories, and
+entities against these benefits.
 
-* Freedom.  We want to use the best tools available.  Maybe that means a different ORM than ActiveRecord or maybe it means using another data store entirely.  If we decide that user info belongs in a   document story, we can throw everything in MongoDB and all we need  to do is to write a repository capable of making objects with Mongoid.  But we always want to have the freedom to use the best tools available for the job.
-* Testing.  SitterCity prides itself on adding code through BDD and TDD. That means we have thousands of tests for each project we work on.  When you have thousands of tests, you want them to run fast.  Testing a PORO (Plain Old Ruby Object) takes seconds not minutes, whereas many Rails tests suits get bloated after a few months.
-* Avoid leaning on Rails.  Rails can make dramatic changes in how it operates, but it will have minimal effect on our app because our Rails-dependent code has been centralized into a few small classes.  That allows us to upgrade to the newer versions of Rails with minimal effort, because our code doesn’t rely on Rails.
+* Freedom.  We want to use the best tools available.  Maybe that means a different ORM than ActiveRecord or maybe it means using another data store
+  entirely.  If we decide that user info belongs in a document store, all we need  to do is to write a new repository.  We always want to have the freedom to use the best tools available for the job.
+* Testing.  At SitterCity, we pride ourselves on adding code through BDD and TDD. That means we have thousands of tests for each project we work on.
+  When you have thousands of tests, you want them to run fast.  Testing a PORO (Plain Old Ruby Object) takes seconds--not minutes, whereas Rails
+  test suites get bloated within a few months.
+* Avoid leaning on Rails.  We don't want to be held hostage by our web framework.  By minimizing and centralizing Rails-specific code, we don't have
+  to worry about our web framework chaning the rules on us.  Rails can make dramatic changes in how it operates, and it won't effect us.  Plus, it
+  leaves us free to upgrade to newer versions of Rails with minimal effort. 
 * Add features quickly.  Yes, it's a pain to setup a repo, entity, context, and factory when you've got one feature.  But you can expect to write more and more features with more and more complexity as your app lives on. Sure, creating a user is easy now, but a year from now we may be creating a user in the DB, sending a welcome email, charging a credit card, sending a text message about the charge, and initiating a call from our customer service to the new user.  We can easily extend the functionality of the CreateUser context without effecting any other part of the system. 
 
-Many of these benefits are ones that are not visible when working on one single feature.  But as features add up and your app becomes more and more complex, you will be grateful that you have a system in place for keeping the chaos at bay.  Ultimately, this will allow you to add more features quickly and with ease.  And that’s a lot better than being caught in refactor hell, where each additional feature you write requires you restructure large portions of your original implementation.  The end goal is always to write high-quality software that is resilient to all the changes that you will inevitably confront.   Good luck out there.
+Many of these benefits are ones that are not visible when working on one single feature.  But as features add up and your app becomes more and more
+complex, you will be grateful that you have a system in place for keeping the chaos at bay.  At SitterCity, we’re supporting a decade’s worth of
+business requirements and we’re adding new features every week.  The end goal is always to write high-quality software that is resilient to all the changes that you will inevitably confront.   Good luck out there.

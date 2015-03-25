@@ -10,11 +10,17 @@ categories: design patters, testing, software architecture
 
 # Design Patterns, Fast Tests, and Robust Software, Part I
 
-Writing high quality software means expecting change: changes to business requirements, changes to the web framework you’ve chosen, changes to the libraries you depend on and changes to the coding language.  At SitterCity, we typically rely on Rails for our web framework, but we very rarely write software that looks like Rails software.  When we're building a Rails app, we try to leverage the good parts of Rails and avoid the bad.  We typically construct views and controllers in a conventional way, but handle persistent storage much differently than an idiomatic rails app.
+Writing high quality software means expecting change: changes to business requirements, changes to the web framework you’ve chosen, changes to the
+libraries you depend on and changes to the coding language.  At SitterCity, we typically rely on Rails for our web framework, but our Rails projects don't looks like most Rails projects.  When we're building a Rails app, we try to leverage the good parts of Rails and avoid the bad.  We typically construct views and controllers in a conventional way, but handle persistent storage much differently than an idiomatic rails app.
 
-Part of anticipating change means that we structure our software in a way that minimizes its reliance on the web framework.  To accomplish this, we rely on a constellation of design patterns that includes repositories, entities, dependency injection, factories, and commands (sometimes called contexts or use-cases).  I won't spend a lot of time explaining each pattern, so if these are new to you, then I'd suggest you look at the relevant chapters of this book: http://com.  Most of what we sketch out in these posts will be a rough approximation of what’s you would write in a real project.  I’m leaving out details about namespacing, error handling, and testing gotcha’s so that we can focus on the big picture. In this series of blog posts, I’ll explain how these patterns work in concert to provide us an app that is resilient to many changes.
+Part of anticipating change means that we structure our software in a way that minimizes its reliance on the web framework.  To accomplish this, we
+rely on a constellation of design patterns that includes repositories, entities, dependency injection, factories, and commands (sometimes called
+contexts or use-cases).  I won't spend a lot of time explaining each pattern, so if these are new to you, then I'd suggest you look at the relevant
+chapters of <a href="http://designpatternsinruby.com"> this book </a>.  Most of what we sketch out in these posts will be a rough approximation of
+what you would write in a real project.  I’m omitting details about namespacing, error handling, and testing nuances so that we can focus on the big
+picture. In this series of blog posts, I’ll explain how these patterns work in concert to provide us an app that is responsible, resilient, and robust.
 
-In order to explain this architecture, let's use the example of creating a user.  
+In order to explain this architecture, let's use the example of creating a user..  
 
 ## Repositories and Entities
 
