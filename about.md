@@ -4,8 +4,8 @@ title: About
 permalink: /about/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](http://jekyllrb.com/)
+This blog contains information from Sittercity's tech team about our technology, our methodologies, our tools, our current projects, and maybe even upcoming events.
 
-You can find the source code for the Jekyll new theme at: [github.com/jglovier/jekyll-new](https://github.com/jglovier/jekyll-new)
+Think this stuff sounds awesome? Want to work with us? Check out our [open positions](https://www.sittercity.com/about-us/jobs).
 
-You can find the source code for Jekyll at [github.com/jekyll/jekyll](https://github.com/jekyll/jekyll)
+Want to interface with our various APIs? Check out our [Developer Hub](http://developer.sittercity.com/).
