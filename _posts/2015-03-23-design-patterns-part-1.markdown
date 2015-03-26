@@ -1,17 +1,14 @@
 ---
-layout:post
-title:'Design Patterns, Fast Tests, and Robust Software, Part I'
-date:2015-02-23 12:01:00
-categories: design patters, testing, software architecture
+layout: post
+title: "Design Patterns, Fast Tests, and Robust Software, Part I"
+date: 2015-02-23 12:01:00
+categories: design patterns, testing, software architecture
 ---
-
-<meta charset="utf-8">
-<!-- not sure this charset isn't pulled in from _includes --> 
 
 # Design Patterns, Fast Tests, and Robust Software, Part I
 
 Writing high quality software means expecting change: changes to business requirements, changes to the web framework you’ve chosen, changes to the
-libraries you depend on and changes to the coding language.  At SitterCity, we typically rely on Rails for our web framework, but our Rails projects don't looks like most Rails projects.  When we're building a Rails app, we try to leverage the good parts of Rails and avoid the bad.  We typically construct views and controllers in a conventional way, but handle persistent storage much differently than an idiomatic rails app.
+libraries you depend on and changes to the coding language.  At Sittercity, we typically rely on Rails for our web framework, but our Rails projects don't looks like most Rails projects.  When we're building a Rails app, we try to leverage the good parts of Rails and avoid the bad.  We typically construct views and controllers in a conventional way, but handle persistent storage much differently than an idiomatic rails app.
 
 Part of anticipating change means that we structure our software in a way that minimizes its reliance on the web framework.  To accomplish this, we
 rely on a constellation of design patterns that includes repositories, entities, dependency injection, factories, and commands (sometimes called
@@ -20,7 +17,7 @@ chapters of <a href="http://designpatternsinruby.com"> this book </a>.  Most of 
 what you would write in a real project.  I’m omitting details about namespacing, error handling, and testing nuances so that we can focus on the big
 picture. In this series of blog posts, I’ll explain how these patterns work in concert to provide us an app that is responsible, resilient, and robust.
 
-In order to explain this architecture, let's use the example of creating a user..  
+In order to explain this architecture, let's use the example of creating a user.
 
 ## Repositories and Entities
 
@@ -32,7 +29,7 @@ Most Rails apps use the ORM that ships with Rails, ActiveRecord.  To create a us
 
 {% endhighlight %}
 
-At SitterCity, we often want the flexibility to change parts of the app, and that includes changing the ORM.  So, we'll use the repository pattern concentrate all ActiveRecord queries into single class.  Instead of the code you saw above, we might have a class that looks like this:
+At Sittercity, we often want the flexibility to change parts of the app, and that includes changing the ORM.  So, we'll use the repository pattern to concentrate all ActiveRecord queries into single class.  Instead of the code you saw above, we might have a class that looks like this:
 
 
 {% highlight ruby %}

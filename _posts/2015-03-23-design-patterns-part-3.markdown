@@ -1,16 +1,13 @@
 ---
-layout:post
-title:'Design Patterns, Fast Tests, and Robust Software, Part III'
-date:2015-02-23 12:01:00
-categories: design patters, testing, software architecture
+layout: post
+title: "Design Patterns, Fast Tests, and Robust Software, Part III"
+date: 2015-02-23 12:01:00
+categories: design patterns, testing, software architecture
 ---
-
-<meta charset="utf-8">
-<!-- not sure this charset isn't pulled in from _includes --> 
 
 #Part III: Putting it all together
 
-In the last installment, we talked about using the Command Pattern to manage our business logic and leveraging Dependency Injection to load in all of our collaborator classes.  Inside our command, or context, we made a call to our repository.  We talked about what a repository in Part I.  It centralizeis all of our ORM-specific code into a single class that returned instances of our custom entity.
+In the last installment, we talked about using the Command Pattern to manage our business logic and leveraging Dependency Injection to load in all of our collaborator classes.  Inside our command, or context, we made a call to our repository.  We talked about what a repository in Part I.  It centralizes all of our ORM-specific code into a single class that returned instances of our custom entity.
 
 ## Loose Ends
 
@@ -74,7 +71,7 @@ of the repository should be clear.
 
 ##The Call Chain
 
-Now that we’ve got this giant collection of design patterns all working on concert, let’s walk through how they all interact.  At SitterCity we would test that everything is wired up correctly by using a Cucumber test.  Before we wrote any repository, entity, context, or factory, we would write a Cucumber tests that captured the process of creating a user.  That test would remain failing until we’d implemented everything else.  Afterwards, it should pass.  
+Now that we’ve got this giant collection of design patterns all working on concert, let’s walk through how they all interact.  At Sittercity we would test that everything is wired up correctly by using a Cucumber test.  Before we wrote any repository, entity, context, or factory, we would write a Cucumber tests that captured the process of creating a user.  That test would remain failing until we’d implemented everything else.  Afterwards, it should pass.  
 
 Here’s what we’d see if we were dissecting the call chain.  Inside the controller, we’d see this:
 
@@ -152,7 +149,7 @@ end
 
 The factory is the lynchpin for the whole operation.  That’s where we all of our contexts get created with their real, live, collaborator classes (as opposed to the mocks we used in testing).
 
-Now that our controller has an instance of our CreateUser context in it's handsl, let's take a look at what code is executed when the controller calls our context. In this case our business logic consists of creating a user in the database and sending
+Now that our controller has an instance of our CreateUser context in its hands, let's take a look at what code is executed when the controller calls our context. In this case our business logic consists of creating a user in the database and sending
 a “welcome” email. Let's take a look at what code is executed when the controller calls our context. 
 
 
@@ -219,23 +216,23 @@ So even if we understand this elaborate call chain, we may have one lingering qu
 The answer is: it depends. We might want it.  We might not want it.
 
 Whether it makes sense to use all these patterns together depends on what you’re building.  If you’re in a 24 hour hackathon, should just write your
-code as quickly as possible.  You shouldn't worry about all these design pattens.  Or, if you’re taking a few days to crank out an MVP, then go
-ahead of an just write an idiomatic Rails app.  Once you’ve validated your idea, then it's time to think about how you're going to architect your
-app for the long term.  Using these design patterns makes sense for us, but you should understand your own business requirements and goals when considering whether this is right for you.
+code as quickly as possible.  If you’re cranking out an MVP so you can validate an idea, then go
+ahead of an just write an idiomatic Rails app.  You shouldn't worry about all these design pattens. But once you’ve validated your idea, then it's time to think about how you're going to architect your
+app for the long term.  At Sittercity, using these design patterns makes sense for us, but you should understand your own business requirements and goals when considering whether this is right for you.
 
-So when you're weighing wether to use this constellation of design patterns, weigh the effors with writing factories, contexts, repositories, and
+So when you're weighing wether to use this constellation of design patterns, try to balance the efforts with writing factories, contexts, repositories, and
 entities against these benefits.
 
 * Freedom.  We want to use the best tools available.  Maybe that means a different ORM than ActiveRecord or maybe it means using another data store
   entirely.  If we decide that user info belongs in a document store, all we need  to do is to write a new repository.  We always want to have the freedom to use the best tools available for the job.
-* Testing.  At SitterCity, we pride ourselves on adding code through BDD and TDD. That means we have thousands of tests for each project we work on.
+* Testing.  At Sittercity, we pride ourselves on adding code through BDD and TDD. That means we have thousands of tests for each project we work on.
   When you have thousands of tests, you want them to run fast.  Testing a PORO (Plain Old Ruby Object) takes seconds--not minutes, whereas Rails
   test suites get bloated within a few months.
 * Avoid leaning on Rails.  We don't want to be held hostage by our web framework.  By minimizing and centralizing Rails-specific code, we don't have
-  to worry about our web framework chaning the rules on us.  Rails can make dramatic changes in how it operates, and it won't effect us.  Plus, it
+  to worry about our web framework changing the rules on us.  Rails can make dramatic changes in how it operates and it won't effect us.  Plus, it
   leaves us free to upgrade to newer versions of Rails with minimal effort. 
 * Add features quickly.  Yes, it's a pain to setup a repo, entity, context, and factory when you've got one feature.  But you can expect to write more and more features with more and more complexity as your app lives on. Sure, creating a user is easy now, but a year from now we may be creating a user in the DB, sending a welcome email, charging a credit card, sending a text message about the charge, and initiating a call from our customer service to the new user.  We can easily extend the functionality of the CreateUser context without effecting any other part of the system. 
 
 Many of these benefits are ones that are not visible when working on one single feature.  But as features add up and your app becomes more and more
-complex, you will be grateful that you have a system in place for keeping the chaos at bay.  At SitterCity, we’re supporting a decade’s worth of
+complex, you will be grateful that you have a system in place for keeping the chaos at bay.  At Sittercity, we’re supporting a decade’s worth of
 business requirements and we’re adding new features every week.  The end goal is always to write high-quality software that is resilient to all the changes that you will inevitably confront.   Good luck out there.

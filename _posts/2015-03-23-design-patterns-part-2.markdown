@@ -1,12 +1,9 @@
 ---
-layout:post
-title:'Design Patterns, Fast Tests, and Robust Software, Part II'
-date:2015-02-23 12:01:00
-categories: design patters, testing, software architecture
+layout: post
+title: "Design Patterns, Fast Tests, and Robust Software, Part II"
+date: 2015-02-23 12:01:00
+categories: design patterns, testing, software architecture
 ---
-
-<meta charset="utf-8">
-<!-- not sure this charset isn't pulled in from _includes --> 
 
 # Part II: Commands, Dependency Injection, Factories
 
@@ -16,9 +13,10 @@ In part I, we talked about using using the Repository and Entity patterns in ord
 
 Many web apps start small, but the successful ones end up lasting years.  As an app goes through its lifecycle, it accumulates feature after
 feature.  In a Rails app, models that were only 30 lines long quickly grow into 300 lines.  It's suddenly difficult to navigate all that terrain.
-At SitterCity we prefer to write many small commands, or contexts, rather than stuffing all business logic into the model.  These context classes
+At Sittercity we prefer to write many small commands, or contexts, rather than stuffing all business logic into the model.  These context classes
 will be initialized with any other classes that the context might need.  Within the Rails system, we end up with barebones models that simple manage
-validations and the relationships to other models (has\_many or  belongs\_to code).  And our software consists of a bunch of Plain Old Ruby Objects that capture all the business logic involved in our app.
+validations and the relationships to other models (has\_many or  belongs\_to code).  And our software consists of a bunch of Plain Old Ruby Objects (POROs) that capture all the business logic involved
+in our app.  For more on POROs, checkout <a href="http://blog.steveklabnik.com/posts/2011-09-06-the-secret-to-rails-oo-design"> this post </a>.
 
 Let's write a context that's creates a user and sends them a welcome email.  We'll construct the class with the repository that we wrote (since
 that's what's responsible for creating users in the database) and a mailer class (let's imagine that it's an instance of ActionMailer that has a
@@ -31,7 +29,7 @@ We might end up with a context like this.
 class CreateUser
   def initialize(repo, mailer)
     @repo = repo
-     @mailer = mailer
+    @mailer = mailer
   end
 
   def call(first_name, last_name, email)
@@ -44,7 +42,7 @@ end
 
 {% endhighlight %}
 
-To use this context, we’d instantiate our context with the colloborator classes we need.
+To use this context, we’d instantiate our context with the collaborator classes we need.
 
 {% highlight ruby %}
 
@@ -80,7 +78,7 @@ end
 
 Our tests will verify that the appropriate methods get called on the repo and the mailer.  This give us very granular control over testing the business logic in our class.  Namely, we don’t have to worry about problems in the collaborator classes negatively effecting our tests.  If there’s a problem in those collaborator classes it will be either their unit tests or the integration tests that reveal it.  But what we want in the tests for the CreateUser class is laser focus on our own business logic. This may not be complex logic now, but as the app grows, it can become elaborate.
 
-The second benefit is that tests run fast.  When you compare testing a PORO to running a test that depends on ActiveRecord, you’re going to find that it takes forever to load all of ActiveRecord.  The tests for your PORO class will be done running before you’re even done requiring ActiveRecord in your Rails class.  It’ll take even longer if you actually want to have your tests create records in the database.  You’d have to initialize your app everytime you want to run your tests.  You’ll find that this ultimately disincentivizes you from maintaining a thorough tests suite. On the other hand, when your unit tests finish in seconds and you’re able to dive deep into the process of hammering out your business logic through tests, you’re going to enjoy the process much more.
+The second benefit is that tests run fast.  When you compare testing a PORO to running a test that depends on ActiveRecord, you’re going to find that it takes forever to load all of ActiveRecord.  The tests for your PORO class will be done running before you’re even done requiring ActiveRecord in your Rails class.  It’ll take even longer if you actually want to have your tests create records in the database.  You’d have to initialize your app everytime you want to run your tests.  You’ll find that this ultimately disincentivizes you from maintaining a thorough test suite. On the other hand, when your unit tests finish in seconds and you’re able to dive deep into the process of hammering out your business logic through tests, you’re going to enjoy the process much more.
 
 Using Dependency Injection to instantiate the contexts or commands that manage your business logic is a big step in both gaining control over your software and laying the foundation for good test coverage.  And given the fact that you'll be adding tests along with new feature, this strategy pays dividends over the lifespan of an app.
 
@@ -88,7 +86,7 @@ Using Dependency Injection to instantiate the contexts or commands that manage y
 ## Factories
 
 In the same way that we used a repository to consolidate all ActiveRecord method calls in one class, it's a good idea to consolidate all of your contexts inside a single file. A factory, often called a
-constructor, has a pretty simlple job: contruct instances of classes.  So we'll use our factory to take care of doing actually injecting in our dependencies to the contexts we want to call.  That way,
+constructor, has a pretty simple job: contruct instances of classes.  So we'll use our factory to take care of doing actually injecting in our dependencies to the contexts we want to call.  That way,
 the classes that want to execute the context don't need to worry about the other classes that might be required for that context--all they need to know is how what method to call on the context (in our
 case it's "call").
 
@@ -112,7 +110,7 @@ end
 
 {% endhighlight %}
 
-You might notice that this doesn't look exactly like a typical test for a ruby class.  At SitterCity, we write factory classes that are responsible for instantiating our contexts.  We adopt the convention of keeping these factories as modules rather than as full-fledged classes.
+You might notice that this doesn't look exactly like a typical test for a ruby class.  At Sittercity, we write factory classes that are responsible for instantiating our contexts.  We adopt the convention of keeping these factories as modules rather than as full-fledged classes.
 
 In order to make this test pass, we would end up writing the following code for our factory.
 
@@ -127,9 +125,6 @@ module UserFactory
    self.create_user
     CreateUser.new(ARUserRepository.new, UserMailer.new)
    end
-
-
-  private
 
 end
 
@@ -150,6 +145,6 @@ end
 
 {% endhighlight %}
 
-Despite the fact that creating a user involves a context class, our repository, out entity, the User model, and the mailer class, our controller
+Despite the fact that creating a user involves a context class, our repository, our entity, the User model, and the mailer class, our controller
 only need to know two things.  First, it needs to know that the UserFactory has a class method named "create\_user" and second, it needs to know
 that the context for creating user has one public method named “call,” which accepts three arguments (last\_name, first\_name, and email).  The controller can be blissfully unaware of everything beyond those two things.
