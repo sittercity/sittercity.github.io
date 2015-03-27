@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Design Patterns, Fast Tests, and Robust Software, Part I"
-date: 2015-02-23 12:01:00
+date: 2015-03-23 12:01:00
 categories: design patterns, testing, software architecture
 ---
 
@@ -44,7 +44,9 @@ end
 
 {% endhighlight %}
 
-If we decide that we don't want to use ActiveRecord anymore, there won't be a lot of work involved.  Let's say that we want to use the Sequel ORM.  We'd end up writing another repository that had the exact same interface as the ARUserRepository.  (If you’re unfamiliar with the idea of interfaces, just know that in the world of Ruby, we can say that two classes have the same interface if they have the same public methods available to them.)
+If we decide that we don't want to use ActiveRecord anymore, there won't be a lot of work involved.  Let's say that we want to use the Sequel ORM.  We'd end up writing another repository that had the
+exact same interface as the ARUserRepository.  We don't have to have an explitic interface, we can just rely on <a href="http://en.wikipedia.org/wiki/Duck_typing"> duck typing </a>. If you’re unfamiliar with the idea of interfaces, just know that in the world of Ruby, we can say that two classes have the same interface if they have
+the same public methods available to them.) 
 
 {% highlight ruby %}
 
@@ -81,21 +83,14 @@ Here's an example of what an entity class might look like.
 {% highlight ruby %}
 
 module Entity
-  class UserEntity
+  class UserEntity < Struct.new(:id, :first_name, :last_name, :email)
 
     def initialize(attrs={})
-      self.class.members.each do |member|
-        instance_variable_set("@#{member}", attrs[member.to_s]) unless attrs[member.to_s].nil?
-      end
-    end
-
-    def self.members
-      [
-        :id,
-        :first_name,
-        :last_name,
-        :email
-       ]
+      super(attrs[:id],
+            attrs[:first_name],
+            attrs[:last_name],
+            attrs[:email]
+            )
     end
 
   end

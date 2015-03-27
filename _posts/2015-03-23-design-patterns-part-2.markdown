@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Design Patterns, Fast Tests, and Robust Software, Part II"
-date: 2015-02-23 12:01:00
+date: 2015-03-23 12:01:00
 categories: design patterns, testing, software architecture
 ---
 
