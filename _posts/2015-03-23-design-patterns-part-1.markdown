@@ -79,7 +79,6 @@ Entities to the rescue!  We want our app passing around generic entities whose b
 
 Here's an example of what an entity class might look like.
 
-
 {% highlight ruby %}
 
 module Entity
@@ -98,10 +97,22 @@ end
 
 {% endhighlight %}
 
-And here’s how how we would update our repository to leverage that entity class:
+What we've got here is a class that is essentially a struct, that fits our specific needs.  Ruby's struct class is really useful for situations like this. Structs are easy to initialize and they allow
+us to access properties in a simple way.  First, let's initialize an entity
 
 {% highlight ruby %}
+  user = UserEntity.new(email: 'jdoe@example.com')
+{% endhighlight %}
 
+And when we to access an attribute of the struct, we can do it like this.
+
+{% highlight ruby %}
+  user.email # => jdoe@example.com
+{% endhighlight %}
+
+Next, let's integrate our entity into our repository. 
+
+{% highlight ruby %}
 class ARUserRepository
 
   def create(first_name, last_name, email)
