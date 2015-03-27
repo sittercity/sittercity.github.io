@@ -65,7 +65,7 @@ end
 {% endhighlight %}
 
 
-Now, there’s still some big stuff left out of this repository.  For instance, we’re not doing any error handling and the only thing this repository can do is to create users.  But the main stucture
+Now, there’s still some big stuff left out of this repository.  For instance, we’re not doing any error handling and the only thing this repository can do is to create users.  But the main structure
 of the repository should be clear.
 
 
@@ -94,7 +94,7 @@ end
 The controller is doing two things. First, it's using the UserFactory to instantiate a our CreateUser context.  Second, it's executing the context, by using the "call" method and passing along the
 appropriate arguments.
 
-Let's dig int this first operation, where the factory constructs our context for us. Here's what he had origally written.
+Let's dig int this first operation, where the factory constructs our context for us. Here's what he had originally written.
 
 
 {% highlight ruby %}

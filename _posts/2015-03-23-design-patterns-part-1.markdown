@@ -45,7 +45,7 @@ end
 {% endhighlight %}
 
 If we decide that we don't want to use ActiveRecord anymore, there won't be a lot of work involved.  Let's say that we want to use the Sequel ORM.  We'd end up writing another repository that had the
-exact same interface as the ARUserRepository.  We don't have to have an explitic interface, we can just rely on <a href="http://en.wikipedia.org/wiki/Duck_typing"> duck typing </a>. If you’re unfamiliar with the idea of interfaces, just know that in the world of Ruby, we can say that two classes have the same interface if they have
+exact same interface as the ARUserRepository.  We don't have to have an explicit interface, we can just rely on <a href="http://en.wikipedia.org/wiki/Duck_typing"> duck typing </a>. If you’re unfamiliar with the idea of interfaces, just know that in the world of Ruby, we can say that two classes have the same interface if they have
 the same public methods available to them.) 
 
 {% highlight ruby %}
@@ -72,10 +72,14 @@ user.save
 
 {% endhighlight %}
 
-Note that we’ve got a new instance of an object that inherits from ActiveRecord::Base and when we save it, we’re still dealing with an object that inherits from ActiveRecord::Base.
+Note that start with a new instance of an object that inherits from ActiveRecord::Base and when we save it, we’re still dealing with an object that inherits from ActiveRecord::Base. The main difference
+is that it has has its id field populated, indicating that it saved successful to the database.
 
-But what’s the point of using the generic interface of our repository if we’re going to end up returning AR objects? 
-Entities to the rescue!  We want our app passing around generic entities whose behavior is completely under our control--unlike ActiveRecord instances.  Using ActiveRecord instances couples our code tightly to the Rails framework.  We don't want that.  After we create a resource in our repository, we take the response and translate it into a custom entity.  
+But what’s the point of using the generic interface of our repository if we’re going to end up returning AR objects?
+
+Entities to the rescue!  
+
+We want our app passing around generic entities whose behavior is completely under our control--unlike ActiveRecord instances.  Using ActiveRecord instances couples our code tightly to the Rails framework.  We don't want that.  After we create a resource in our repository, we take the response and translate it into a custom entity.  
 
 Here's an example of what an entity class might look like.
 
@@ -97,7 +101,7 @@ end
 
 {% endhighlight %}
 
-What we've got here is a class that is essentially a struct, that fits our specific needs.  Ruby's struct class is really useful for situations like this. Structs are easy to initialize and they allow
+What we've got here is a class that is basically a struct that fits our specific needs.  Ruby's struct class is really useful for situations like this. Structs are easy to initialize and they allow
 us to access properties in a simple way.  First, let's initialize an entity
 
 {% highlight ruby %}
@@ -109,6 +113,8 @@ And when we to access an attribute of the struct, we can do it like this.
 {% highlight ruby %}
   user.email # => jdoe@example.com
 {% endhighlight %}
+
+If you've seen ActiveRecord in action, then this should look familiar to you.
 
 Next, let's integrate our entity into our repository. 
 
@@ -129,6 +135,8 @@ end
 
 {% endhighlight %}
 
-Now that our repository returns an instance of our entity class, we are completely insulated from the world of ActiveRecord.  
+Now that our repository returns an instance of our entity class, we have successfully insulated our software from the world of ActiveRecord.  
 
-With the repository and entity patterns working in tandem, we’re now in control of the behavior of our user resource.  And when it comes to anticipating change, we have the benefit of having all of our AR queries and actions centralized in a single class.  Any time there are changes to ActiveRecord, we only have to update that class.  That’s a lot easier than searching through file after file and updating each query individually.  Ultimately, there will still be a few tweaks we’ll do to the repository class in order to get it to a finalized state, but what we’ve got here is a great start at taking control of our software.
+With the repository and entity patterns working in tandem, we’re now in control of the behavior of our user resource.  And when it comes to anticipating change, we have the benefit of having all of our
+ActiveRecord queries and actions centralized in a single class.  Any time there are changes to ActiveRecord, we only have to update that class.  That’s a lot easier than searching through file after
+file and updating each query individually.  Ultimately, there will still be a few tweaks to this repository class, but what we’ve got here is a great start at taking control of our software.
