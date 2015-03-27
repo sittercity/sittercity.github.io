@@ -13,7 +13,7 @@ libraries you depend on and changes to the coding language.  At Sittercity, we t
 Part of anticipating change means that we structure our software in a way that minimizes its reliance on the web framework.  To accomplish this, we
 rely on a constellation of design patterns that includes repositories, entities, dependency injection, factories, and commands (sometimes called
 contexts or use-cases).  I won't spend a lot of time explaining each pattern, so if these are new to you, then I'd suggest you look at the relevant
-chapters of <a href="http://designpatternsinruby.com"> this book </a>.  Most of what we sketch out in these posts will be a rough approximation of
+chapters of [this book](http://designpatternsinruby.com).  Most of what we sketch out in these posts will be a rough approximation of
 what you would write in a real project.  I’m omitting details about namespacing, error handling, and testing nuances so that we can focus on the big
 picture. In this series of blog posts, I’ll explain how these patterns work in concert to provide us an app that is responsible, resilient, and robust.
 
@@ -45,7 +45,7 @@ end
 {% endhighlight %}
 
 If we decide that we don't want to use ActiveRecord anymore, there won't be a lot of work involved.  Let's say that we want to use the Sequel ORM.  We'd end up writing another repository that had the
-exact same interface as the ARUserRepository.  We don't have to have an explicit interface, we can just rely on <a href="http://en.wikipedia.org/wiki/Duck_typing"> duck typing </a>. If you’re unfamiliar with the idea of interfaces, just know that in the world of Ruby, we can say that two classes have the same interface if they have
+exact same interface as the ARUserRepository.  We don't have to have an explicit interface, we can just rely on [duck typing](http://en.wikipedia.org/wiki/Duck_typing). If you’re unfamiliar with the idea of interfaces, just know that in the world of Ruby, we can say that two classes have the same interface if they have
 the same public methods available to them.) 
 
 {% highlight ruby %}

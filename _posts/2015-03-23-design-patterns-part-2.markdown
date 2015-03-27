@@ -41,9 +41,12 @@ end
 As you can see, the context  is be initialized with instances of any class that it will need to collaborate with in order to run.
 
 Moving all the business logic into contexts or use-cases has will ultimately change the saw that our Rails model classes look.   We end up with barebones models that simply manage
-validations and the relationships to other models (has\_many or  belongs\_to code).  And our software consists of a bunch of Plain Old Ruby Objects (POROs), which is a big win.  For more on POROs, checkout <a href="http://blog.steveklabnik.com/posts/2011-09-06-the-secret-to-rails-oo-design">this post</a>.
+validations and the relationships to other models (has\_many or  belongs\_to code).  And our software consists of a bunch of Plain Old Ruby Objects (POROs), which is a big win.  For more on POROs,
+checkout [this post](http://blog.steveklabnik.com/posts/2011-09-06-the-secret-to-rails-oo-design).
 
-So what will our context look like?  Well, we know it has an initialize method on it.  Beyond that, we only want one public method.  With the command pattern, it’s often something like “execute,” “call”, or “run.”  Any experienced developer that sees a class with a public method like this will immediately know that you’ve using the command pattern. 
+So what will our context look like?  Well, we know it has an initialize method on it.  Beyond that, we only want one public method.  With the command pattern, it’s often something like “execute,” “call”, or “run.”  Any experienced developer that sees a class with a public method like this will immediately know that you’ve using the command pattern.  
+
+We’re going to pass some arguments to the “call” method.  The idea here is that the collaborator classes are passed in to the context when the class instantiates, but when it comes to the things that change we’ll pass those to the call method.
 
 {% highlight ruby %}
 
