@@ -18,9 +18,9 @@ interact with one another, we're going to start to feel stifled by the rigid MVC
 
 At Sittercity we prefer to write many small commands, or contexts, rather than stuffing all business logic into the model.   Often times we need a few classes to work together in a context.  So we use a strategy called Dependency Injection.  With this pattern, we initialize our class with any of the other classes that will be used in our context—we’re sowing these classes into the fabric of this context.
 
-Let’s write a context that’s creates a user and sends them a welcome email.  We’re going to want to inject the the classes that our context depends on:
+Let’s write a context that creates a user and sends them a welcome email.  We’re going to want to inject the classes that our context depends on:
 
-1. a class capable to creating users in the database
+1. a class capable of creating users in the database
 
 2. a class capable of sending emails
 
@@ -38,9 +38,9 @@ end
 
 {% endhighlight %}
 
-As you can see, the context  is be initialized with instances of any class that it will need to collaborate with in order to run.
+As you can see, the context is initialized with instances of any class that it will need to collaborate with in order to run.
 
-Moving all the business logic into contexts or use-cases has will ultimately change the saw that our Rails model classes look.   We end up with barebones models that simply manage
+Moving all the business logic into contexts or use-cases will ultimately change the saw that our Rails model classes look.   We end up with barebones models that simply manage
 validations and the relationships to other models (has\_many or  belongs\_to code).  And our software consists of a bunch of Plain Old Ruby Objects (POROs), which is a big win.  For more on POROs,
 checkout [this post](http://blog.steveklabnik.com/posts/2011-09-06-the-secret-to-rails-oo-design).
 
@@ -154,7 +154,7 @@ The factory needs to require the files for the User model, the
 mailer, the repository, and the entity classes.  One consequence of requiring all these files is that the tests for the Factory tend to run a slower than when we’re testing classes that get to
 dependencies passed on initialization (but they'll still be faster than if we booted up the entire app).
 
-Out tests for the factory are pretty basic.  Since the factory only creates new instances of things, we just need to verify that it’s working properly.  Something like this should be sufficient for a unit test.
+Our tests for the factory are pretty basic.  Since the factory only creates new instances of things, we just need to verify that it’s working properly.  Something like this should be sufficient for a unit test.
 
 {% highlight ruby %}
 

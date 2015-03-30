@@ -8,7 +8,7 @@ categories: design patterns, testing, software architecture
 # Design Patterns, Fast Tests, and Robust Software, Part I
 
 Writing high quality software means expecting change: changes to business requirements, changes to the web framework you’ve chosen, changes to the
-libraries you depend on and changes to the coding language.  At Sittercity, we typically rely on Rails for our web framework, but our Rails projects don't looks like most Rails projects.  When we're building a Rails app, we try to leverage the good parts of Rails and avoid the bad.  We typically construct views and controllers in a conventional way, but handle persistent storage much differently than an idiomatic rails app.
+libraries you depend on and changes to the coding language.  At Sittercity, we often rely on Rails for our web framework, but our Rails projects don't looks like most Rails projects.  When we're building a Rails app, we try to leverage the good parts of Rails and avoid the bad.  We construct views and controllers in a conventional way, but handle persistent storage much differently than an idiomatic rails app.
 
 Part of anticipating change means that we structure our software in a way that minimizes its reliance on the web framework.  To accomplish this, we
 rely on a constellation of design patterns that includes repositories, entities, dependency injection, factories, and commands (sometimes called
@@ -108,7 +108,7 @@ us to access properties in a simple way.  First, let's initialize an entity
   user = UserEntity.new(email: 'jdoe@example.com')
 {% endhighlight %}
 
-And when we to access an attribute of the struct, we can do it like this.
+And when we want to access an attribute of the struct, we can do it like this.
 
 {% highlight ruby %}
   user.email # => jdoe@example.com
