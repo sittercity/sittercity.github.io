@@ -3,6 +3,7 @@ layout: post
 title:  "Welcome to Sittercity Technology!"
 date:   2015-04-02 09:00:00
 categories: sittercity
+author: Phil Trimble
 ---
 
 Welcome! This here is our new blog! As is fitting of a new journal let's start ourselves off with an introduction to Sittercity Tech.
