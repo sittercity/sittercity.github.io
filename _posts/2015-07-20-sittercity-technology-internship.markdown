@@ -1,9 +1,9 @@
 ---
 layout: post
 title:  "Sittercity Technology Internship!"
+author: "Eleanor Lee"
 date:   2015-07-20 12:00:00
 categories: technology
-comments: true
 ---
 
 I have had the pleasure over the past three months of being Sittercity's first technology intern. It has been an exciting and wild ride; full of fun and learning!
