@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Design Patterns, Fast Tests, and Robust Software, Part III"
+title: "Resilient Software Part III"
 date: 2015-03-23 12:01:00
 categories: design patterns, testing, software architecture
 author: "Ben Downey"
