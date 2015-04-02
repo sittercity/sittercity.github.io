@@ -82,16 +82,21 @@ get_flag(:flag_name)
 
 Flagon will call those two methods to work out whether a flag is on or off and your application can be blissfully ignorant about how or where the flags are defined in development, test or production.
 
-For example, you could create an active record model with two attributes "name" and "value" and implement the two interface methods like so:
+For example, if you created a new rails project and an active record model with two attributes "name" and "value", you could implement the two interface methods like so:
 
 {% highlight ruby %}
+# app/models/flag.rb
 class Flag < ::ActiveRecord::Base
-  def self.exists?(flag_name)
-    where(name: flag_name).count > 0
+end
+
+# lib/flag_loader.rb
+class FlagLoader
+  def exists?(flag_name)
+    Flag.exists?(name: flag_name)
   end
 
-  def self.get_flag(flag_name)
-    flag = where(name: flag_name).first
+  def get_flag(flag_name)
+    flag = Flag.where(name: flag_name).first
     !!flag && flag.value == "on"
   end
 end
@@ -100,7 +105,9 @@ end
 Then you could simply pass it into Flagon to have all your flags load from your database rather than environment variables:
 
 {% highlight ruby %}
-Flagon.init Flag
+# config/initializers/flagon.rb
+require 'flag_loader'
+Flagon.init FlagLoader.new
 {% endhighlight %}
 
 ## Telling, rather than asking
