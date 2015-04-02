@@ -3,6 +3,7 @@ layout: post
 title: "Design Patterns, Fast Tests, and Robust Software, Part I"
 date: 2015-03-23 12:01:00
 categories: design patterns, testing, software architecture
+author: "Ben Downey"
 ---
 
 # Design Patterns, Fast Tests, and Robust Software, Part I
@@ -51,9 +52,11 @@ the same public methods available to them.)
 {% highlight ruby %}
 
 class SequelUserRepository
+
   def create(first_name, last_name, email)
     $users.insert(first_name: first_name, last_name: last_name, email: email:)
   end
+
 end
 
 {% endhighlight %}

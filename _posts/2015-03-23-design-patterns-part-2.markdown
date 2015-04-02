@@ -3,6 +3,7 @@ layout: post
 title: "Design Patterns, Fast Tests, and Robust Software, Part II"
 date: 2015-03-23 12:01:00
 categories: design patterns, testing, software architecture
+author: "Ben Downey"
 ---
 
 # Part II: Commands, Dependency Injection, and Factories
@@ -29,6 +30,7 @@ For the first item above, we’re going to pass in an instance of our repository
 {% highlight ruby %}
 
 class CreateUser
+
   def initialize(repo, mailer)
     @repo = repo
     @mailer = mailer
@@ -106,23 +108,23 @@ Our tests will verify that the appropriate methods get called on the repo and th
 
 {% highlight ruby %}
 
-	described CreateUser do
-	  let(:repo) { double(:repo) }
-	  let(:mailer) { double(:mailer) }
-		let(:first_name) { ‘john’ }
-    let(:last_name) { ‘doe }
-    let(:email)  { ‘someEmail@example.com’ }
+described CreateUser do
+  let(:repo) { double(:repo) }
+  let(:mailer) { double(:mailer) }
+  let(:first_name) { ‘john’ }
+  let(:last_name) { ‘doe }
+  let(:email)  { ‘someEmail@example.com’ }
 
-	  it ‘creates a user’ do
-			expect(repo).to receive(:create!).with(
-				first_name,
-        last_name,
-        email
-			)
+  it ‘creates a user’ do
+    expect(repo).to receive(:create!).with(
+      first_name,
+      last_name,
+      email
+    )
 
-	    subject.call(first_name, last_name, email)
-	  end
-	end
+    subject.call(first_name, last_name, email)
+  end
+end
 
 {% endhighlight %}
 
@@ -180,7 +182,7 @@ In order to make our test pass, we would end up writing the following code for o
 
 require ‘create_user’
 require ‘mailer’
-require ‘AR_user_repository’
+require ‘ar_user_repository’
 
 module UserFactory
 
@@ -199,10 +201,12 @@ Back in our controller, we'll have something like this:
 {% highlight ruby %}
 
 class UsersController
+
   def create
     context = UserFactory.create_user
     user = context.call(params[:first_name], params[:last_name], params[:email])
   end
+
 end
 
 {% endhighlight %}
@@ -213,4 +217,4 @@ that the context for creating user has one public method named “call,” which
 
 ## Conclusion
 
-	Our use of the command pattern plays an integral role in decoupling our software of the web framework.  We no longer rely on business logic that lives inside Rails models.  Instead, we have flexible and robust contexts that describe what our app does.  These are not bound to any particular model.  Instead, they are constructed with any dependencies they might have. Using dependency injection allows for this, while also providing an opportunity to write screaming fast tests.  Finally, we pull it all together with a factory that any class can easily call.  We’re laying down a foundation that will give us back control of our software and make it resilient to the changes that await it.
+Our use of the command pattern plays an integral role in decoupling our software of the web framework.  We no longer rely on business logic that lives inside Rails models.  Instead, we have flexible and robust contexts that describe what our app does.  These are not bound to any particular model.  Instead, they are constructed with any dependencies they might have. Using dependency injection allows for this, while also providing an opportunity to write screaming fast tests.  Finally, we pull it all together with a factory that any class can easily call.  We’re laying down a foundation that will give us back control of our software and make it resilient to the changes that await it.

@@ -3,9 +3,10 @@ layout: post
 title: "Design Patterns, Fast Tests, and Robust Software, Part III"
 date: 2015-03-23 12:01:00
 categories: design patterns, testing, software architecture
+author: "Ben Downey"
 ---
 
-#Part III: Putting it all together
+#Putting it all together
 
 In the last installment, we talked about using the Command Pattern to manage our business logic and leveraging Dependency Injection to load in all of our collaborator classes.  Inside our command, or context, we made a call to our repository.  We talked about what a repository does in Part I.  It centralizes all of our ORM-specific code into a single class that returned instances of our custom entity.  So what’s next?  Let’s take an overview of what we’ve done.
 
@@ -109,9 +110,9 @@ Let's dig int this first operation, where the factory constructs our context for
 
 module UserFactory
 
-   self.create_user
+  self.create_user
     CreateUser.new(ARUserRepository.new, UserMailer.new)
-   end
+  end
 
 end
 
@@ -125,18 +126,18 @@ But we've changed the repository so that it too is using dependency injection.  
 
 module UserFactory
 
-   self.create_user
-     CreateUser.new(user_repository, mailer)
-   end
+  self.create_user
+    CreateUser.new(user_repository, mailer)
+  end
 
   private
 
-   self.user_repository
-     ARUserRepository.new(user_model, user_entity)
-   end
+  self.user_repository
+    ARUserRepository.new(user_model, user_entity)
+  end
 
   self.mailer
-   UserMailer.new #our mailer
+    UserMailer.new #our mailer
   end
 
   self.user_model
