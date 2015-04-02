@@ -6,7 +6,7 @@ categories: design patterns, testing, software architecture
 author: "Ben Downey"
 ---
 
-# Part II: Commands, Dependency Injection, and Factories
+# Commands, Dependency Injection, and Factories
 
 In part I, we talked about using the Repository and Entity patterns in order to centralize our ORM-specific code.  In this installment, we’ll talk about three other design patterns.  We’ll talk about
 the Command Pattern, which we'll leverage to create contexts or use-cases that manage the complex business logic in our app.  And we’ll rely on Dependency Injection to make our life easy when it comes to testing.  Finally, we’ll talk about having our Rails controller interact with a factory that sets up our context for us, rather than having the controller instantiate the context itself.

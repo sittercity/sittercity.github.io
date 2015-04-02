@@ -6,7 +6,7 @@ categories: design patterns, testing, software architecture
 author: "Ben Downey"
 ---
 
-# Design Patterns, Fast Tests, and Robust Software, Part I
+# Long Lasting Software
 
 Writing high quality software means expecting change: changes to business requirements, changes to the web framework you’ve chosen, changes to the
 libraries you depend on and changes to the coding language.  At Sittercity, we often rely on Rails for our web framework, but our Rails projects don't looks like most Rails projects.  When we're building a Rails app, we try to leverage the good parts of Rails and avoid the bad.  We construct views and controllers in a conventional way, but handle persistent storage much differently than an idiomatic rails app.
