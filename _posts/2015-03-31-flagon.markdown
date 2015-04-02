@@ -1,87 +1,132 @@
-+---
-+layout: post
-+title:  "Flagon - A Storage Agnostic Feature Flag Gem"
-+date:   2015-02-31 22:00:00
-+categories: ruby
-+comments: true
-+author: "Jonathan Fantham"
-+---
+---
+layout: post
+title:  "Flagon - An Agnostic Feature Flag Gem"
+date:   2015-04-01 22:00:00
+categories: ruby
+comments: true
+author: "Jonathan Fantham"
+---
 
-Last month the sittercity released [Flagon](https://github.com/sittercity/flagon), a simple gem that you can use to quickly set up feature flags in your project without worrying about how you might need to store these flags in production or other environments.
+Last month the Sittercity tech team released [Flagon](https://github.com/sittercity/flagon), a simple gem that you can use to quickly set up feature flags in your project without worrying about how you might need to store these flags in different environments.
 
-## Feature flags you say... what exactly do you mean by feature flags?
+## Feature flags you say...
 
-Okay, imagine you are developing a particularly risky piece of code. Your client has asked for the ability to turn the risky feature off at the snap of a finger if anything goes wrong in the wild, and you need a way to flick that switch. This is a common scenario that many software engineers have encountered before and many more will encounter in the future, we call these feature flags because the flag is either on or off.
+Okay, let's make sure we're all reading the same page.
 
-## There are other feature flag gems, what's so special about flagon?
+Imagine you are developing a particularly risky piece of code. Your client has asked for the ability to turn the risky feature off at the snap of a finger if anything goes wrong in the wild, and you need a way to flick that switch.
 
-Before developing something, it would be stupid not to check if the problem has already been solved by some other nice person. However, upon looking for something to fill our gap, we discovered that there are not a lot of choices out there that deal with this problem in a flexible way. Most are tied to active record or another single type of storage, and while this may be convenient because you're already in the database most of the time, it doesn't comply with the ideals of the [12 Factor App](http://12factor.net/) by storing settings in environment variables, and lets face it, for development and testing something a lot simpler could be used to define flags that doesn't involve database migrations, like a hash.
+This is a common scenario that many software engineers have encountered before and many more will encounter in the future, these switches we use to turn features on and off are often called feature flags.
 
-Having said that, I'm not going to waggle my finger at you and tell you you're doing it wrong! If you want to use the database for feature flags in some cases, so be it! You can. Flagon allows any storage mechanism if you care to extend it.
+## Okay, but there are other feature flag gems. What's so special about Flagon?
 
-## Using flagon, the basics
+Before developing a new gem, it would be silly not to check if the problem had already been solved by some other nice person. However, upon looking for something to fill our gap, we discovered that there were not a lot of choices out there that deal with this problem in a flexible way. Most are tied to active record or another single type of storage, and while this may be convenient because you're already in the database most of the time, it doesn't comply with the ideals of the [12 Factor App](http://12factor.net/) by storing settings in environment variables, and lets face it, for development and testing something a lot simpler could be used to define flags that doesn't involve database migrations, like a hash.
 
-In it's simplest form, flagon can be setup to use environment variables in one line:
+Having said that, I'm not going to waggle my finger at you and tell you you're doing it wrong. If you want to use the database for feature flags in some cases, so be it! You can. Flagon allows any storage mechanism if you care to extend it.
+
+## Using Flagon, the simplest example
+
+In it's simplest form, Flagon can be set up to use environment variables in one line:
 
 {% highlight ruby %}
 Flagon.init
-{% endhilight %}
+{% endhighlight %}
 
-Flagon expects environment variables to be set to "on". If they are not "on" then they are considered off. So to setup your first flag you could set an environment variable like so:
+Flagon expects environment variables to be set to "on". If they are not "on" then they are considered off. So to set up your first flag you could set an environment variable like so:
 
 {% highlight bash %}
 export DAILY_EMAILS=on
-{% endhilight %}
+{% endhighlight %}
 
 Then, you would check the flag in your project by calling:
 
 {% highlight ruby %}
 Flagon.enabled?(:daily_emails)
-{% endhilight %}
+{% endhighlight %}
 
-## Using an alternative way of defining flags
+## Alternative ways of defining flags
 
-You might not like setting and unsetting environment variables all the time in development, so maybe you want to use a hash to define your flags and pass it in when you initialize flagon. You can do this by passing in a hash loader:
+You might not want to use environment variables all the time, maybe you want something even simpler, like a hash? You can do this by initializing a hash loader and passing it into the init method of Flagon:
 
 {% highlight ruby %}
 loader = Flagon.hash_loader { daily_emails: "on" }
 Flagon.init loader
-{% endhilight %}
+{% endhighlight %}
 
-In order to keep things consistent, we stuck with using "on" to define an enabled flag. And you would use flagon in exactly the same way as you do above in the environment variable example.
+Other than that change (and not needing to set environment variables), you use Flagon in exactly the same way as before. To keep things consistent with the environment variables, we stuck with "on" to define an enabled flag.
 
-## Extending flagon to use your own flag defninition method
-
-You can create your own loaders too. For instance, if you needed to use active record or mongo to store your flags you just need to implement the following interface as a new loader:
+In addition to the hash loader, Flagon also provides the file loader which will read from a yaml file:
 
 {% highlight ruby %}
-exists?(:flag_name) # returns true or false depending on whether the flag has been defined
-get_flag(:flag_name) # returns the value of the flag, e.g. "on" or "off"
-{% endhilight %}
+loader = Flagon.file_loader "/path/to/my/file.yaml"
+Flagon.init loader
+{% endhighlight %}
 
-Flagon will call those two methods to work out whether a flag is on or off and your application can be blissfully ignorant about how or where the flags are defined.
+The yaml file is simple too:
 
-For example, if you created an active record model and defined the two methods like so:
+{% highlight ruby %}
+daily_emails: on
+automatic_happy_face_emoji: off
+{% endhighlight %}
+
+## Extending Flagon
+
+If environment variables, hashes and yaml aren't your thing you can create your own loaders too. You just need to implement the loader interface on a custom object and pass it in instead of one of the provided loaders. Here's the loader interface:
+
+{% highlight ruby %}
+# returns true or false, depending on whether the flag has been defined.
+exists?(:flag_name)
+
+# returns true or false, depending on whether the flag is "on".
+get_flag(:flag_name)
+{% endhighlight %}
+
+Flagon will call those two methods to work out whether a flag is on or off and your application can be blissfully ignorant about how or where the flags are defined in development, test or production.
+
+For example, you could create an active record model with two attributes "name" and "value" and implement the two interface methods like so:
 
 {% highlight ruby %}
 class Flag < ::ActiveRecord::Base
-  def exists?(flag_name)
+  def self.exists?(flag_name)
     where(name: flag_name).count > 0
   end
 
-  def get_flag(flag_name)
-    where(name: flag_name).first.try(:value)
+  def self.get_flag(flag_name)
+    flag = where(name: flag_name).first
+    !!flag && flag.value == "on"
   end
 end
-{% endhilight %}
+{% endhighlight %}
 
-Then you could simply pass it into flagon to have all your flags load from your database rather than environment variables:
+Then you could simply pass it into Flagon to have all your flags load from your database rather than environment variables:
 
 {% highlight ruby %}
 Flagon.init Flag
-{% endhilight %}
+{% endhighlight %}
 
-## What else?
+## Telling, rather than asking
 
-We're unlikely to update this blog post, but we will certainly keep the readme of the project up to date, so visit the [flagon project page](https://github.com/sittercity/flagon) if you'd like to know more about it.
+If you're the type of person that likes to tell your programs what to do rather than ask them, you can use this smashing alternative syntax:
+
+{% highlight ruby %}
+Flagon.when_enabled(:game_changer) do
+  # change the world for the better
+end
+{% endhighlight %}
+
+It's basically the same thing... but you might enjoy the small power rush it gives you.
+
+## Crossing your Ts and dotting your Is
+
+If you haven't set a flag, it will be considered to be off. There's nothing wrong with a flag being off of course, but you may want to make sure that the flag is in fact, supposed to be off. Flagon provides a method that can be used to check if flags have been set as expected.
+
+{% highlight ruby %}
+Flagon.init
+Flagon.ensure_flags_exist(:game_changer, :automatic_happy_face_emoji)
+{% endhighlight %}
+
+If either flag hasn't been set, `ensure_flags_exist` will raise a `Flagon::Inspector::FlagMissing` exception. We like to call it immediately after initializing Flagon so that we know about possible problems as early as possible.
+
+## Anything else?
+
+Maybe! This post is unlikely to change over time, but we will certainly keep the readme of the project up to date with changes and improvements so visit the [Flagon project page](https://github.com/sittercity/flagon) for the latest details on the gem.
 
