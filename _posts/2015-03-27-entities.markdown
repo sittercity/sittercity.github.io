@@ -1,0 +1,324 @@
+---
+layout: post
+title: The Entity Garden
+date: 2015-04-02 12:01:00
+categories: design patterns, entities, abstract entities, testing, software architecture
+author: "Ben Downey"
+---
+
+
+# Introduction
+
+I’d like to convince you to read a boring blog post about one of the most uninteresting design patterns in the world.  Unless you want to be bored to death, please stop reading now.
+
+Still with me?  
+
+You fool!
+
+OK.  Here we go.  
+
+The abstract entity pattern is a very basic design pattern.  But  we use it to great effect at SitterCity.  We often use Rails as our web framework of choice.  But we often find that some elements of Rails that are great when prototyping are terrible when your software has to go through significant change over the course of months and years.  The biggest offender is ActiveRecord.  This ORM is terrific when you want to whip up an app in a hurry.  It’s acts like a strong glue the binds your app together.  You’ll find ActiveRecord objects in every layer of a typical Rails app.  But these strong adhesive powers of Rails can be detrimental.  We don’t always want everything to stick together.  Sometimes we want segments of our app to divide off easily and meld with other parts of the app.
+
+One strategies for wrestling our software from the vice-like grips of ActiveRecord is to use the abstract entity pattern.  In lieu of littering our app with ActiveRecord objects, we’ll use entities customized to our needs.  They’ll look similar to ActiveRecord objects, but they’ll be better.  They’ll be completely under our control.
+
+## When to Use and Entity
+
+The answer is: whenever you want to.  The typical use case at SitterCity is that we want an object that would otherwise be an ActiveRecord object in something that fits our needs precisely and keeps the software that we write decoupled from the web framework.  
+
+But we don’t have limit our use of entities to just the case where we’re trying to get control over ActiveRecord objects.
+We can also use entities to create objects that are easy to pass around.  For instance, let’s imagine that in our app we need to send an email that looks like this.
+
+{% highlight ruby%}
+
+Hello Jane Flame,
+
+Thank you for buying three tickets to the cocktail party we are hosting on May 5.
+
+Cheers,
+
+The team
+
+{% endhighlight %}
+
+
+Let’s imagine that, in order to generate this email, we’ve got a context that we call when the user buys tickets and that part of this context involves sending information to a mailer that takes care of sending the email.
+
+
+{% highlight ruby %}
+
+	class BuyEventTickets
+	def call(params, current_user)
+			charge_user.call(params[:user_payment_info])
+			Mailer.send_email(
+				current_user.email, 
+				current_user.first_name, 
+				current_user.last_name, 
+				params[:event], 
+				params[:event_date], 
+				params[:number_of_tickets_bought]
+			)
+	  end
+
+	end
+
+{% endhighlight %}
+
+Next, let’s get inside the Mailer class to see what that looks like.  
+
+{% highlight ruby %}
+
+	class Mailer
+
+		def send_mail(recipient_email_address, first_name, last_name, event, event_date, number_of_tickets_bought) 
+		
+		email = build_email(
+			to: recipient_email_address,
+			first_name: first_name,
+			last_name: last_name
+			event: event,
+			event_date: event_date,
+			number_of_tickets_bought: number_of_tickets_bought
+		)
+		email.deliver
+
+	end
+
+{% endhighlight %}
+
+We can all agree that this send_email method is out of control.  It’s perfectly acceptable to cringe when you see a method that takes in a half dozen arguments.
+
+There are few different ways to fix what’s wrong here. We’re going to use an entity.  Instead of passing all these arguments to the send_email method, let’s create a entity that has the attributes we care about.  Now, this won’t be an entity that is backed up by an ActiveRecord model.  It’s just an object that possess the attributes that we care about when sending an email.     Our context will instantiate a new instance of our entity and our mailer will parse that entity.
+
+Here’s what our entity will look like
+
+{% highlight ruby %}
+
+class EventEmail < Struct.new(
+		:first_name, 
+		:last_name,
+		:email,
+		:event,
+		:event_date,
+		:tickets
+)
+
+   def initialize(attrs={})
+     super(attrs[:email],
+           attrs[:first_name],
+           attrs[:last_name],
+           attrs[:event],
+           attrs[:event_date],
+           attrs[:ticket_amount]
+           )
+   end
+
+ end
+
+
+{% endhighlight %}
+
+Our context will then generate a new instance of the class with all the properties we want.
+
+
+{% highlight ruby %}
+
+	class BuyEventTickets
+	def call(params, current_user)
+			charge_user.call(params[:user_payment_info])
+			email_attrs = EventEmail.new({
+				email: current_user.email, 
+				first_name: current_user.first_name, 
+				last_name: current_user.last_name, 
+				event: params[:event], 
+				event_date: params[:event_date], 
+				ticket_amount: params[:number_of_tickets_bought]
+})
+			Mailer.send_email(email_attrs)
+	  end
+
+	end
+
+{% endhighlight %}
+
+Our revised Mailer will now get to enjoy a much simpler interface.
+
+
+{% highlight ruby %}
+
+	class Mailer
+
+		def send_mail(attrs) 
+		
+		email = build_email(
+			to: attrs.email,
+			first_name: attrs.first_name,
+			last_name: attrs.last_name
+			event: attrs.event,
+			event_date: attrs.event_date,
+			number_of_tickets_bought: attrs.ticket_amount
+		)
+		email.deliver
+
+	end
+
+{% endhighlight %}
+
+
+
+## The Evolution of Entities
+
+The entity we created above works perfectly well.  But there are a few ways to create entities.  We’ll go over a few varieties so you can see that despite the variety, they’re usually doing the same thing at heart.
+
+We want a high level of control. We want to be able to assign certain properties to the entity, but we don’t want to leave the  entity open to being hijacked and misused.  We want to make sure the right things to into the entity and the wrong things don’t.
+
+For this reason, the Struct class is a perfect fit.  With Struct, we provide a name for the struct and then define the acceptable attributes.  The example below shows an entity class that inherits from a struct that possesses the necessary user attributes.
+
+{% highlight ruby %}
+
+module Entity
+  class UserEntity < Struct.new(:id, :first_name, :last_name, :email)
+
+    def initialize(attrs={})
+      super(attrs[:id],
+            attrs[:first_name],
+            attrs[:last_name],
+            attrs[:email]
+            )
+    end
+
+  end
+end
+
+{% endhighlight %}
+
+We’ll be able to access attributes on this entity in a very straightforward way.  
+
+{% highlight ruby %}
+
+	user = Entity::UserEntity.new(first_name: “Don”, last_name: “Glover”)
+	user.first_name # => Don
+	user.last_name # => Glover
+
+{% endhighlight %}
+
+When we defined the entity earlier, we made the entity an explicit class.  However, out in the wild, you may see a stripped down version of this.  In the code below, you can see that there’s no formal class definition.  User, being capitalized, will be treated by the interpreter like a constant and it will simple *be* the struct, as opposed to the example above where the User class inherited properties from the properly setup struct.
+
+
+{% highlight ruby %}
+
+    module Entity
+      User = Struct.new(
+        :id,
+        :last_name,
+				:first_name,
+				:email
+      ) do
+
+        def initialize(fields)
+          super(*fields.values_at(*members))
+        end
+
+      end
+    end
+
+{% endhighlight %}
+
+In the code above, note that the initialize method is wrapped in a block so that we get everything in one fell sweep. 
+
+But there’s no reason to believe that we’re stuck with Ruby’s Struct.  We can easily get everything we need without even invoking it. 
+
+{% highlight ruby %}
+module Entity
+	class User
+
+		def initialize(attrs={})
+		self.class.members.each do |member|
+			instance_variable_set(“@#{member}”, attrs[:member]) unless attrs[:member].nil?
+     end
+    end
+
+		def self.members
+			[
+				:id,
+        :last_name,
+				:first_name,
+				:email
+				]
+		end
+
+		attr_reader *members
+
+	end
+end
+
+{% endhighlight %}
+
+By using the “instance_variable_set” method, we gain the ability  to call each of the attributes on User in the same way as the example that used a Struct.  This method is on Ruby’s Object class and since everything in Ruby inherits from Object, you can always access and override this method.  You can read more about instance_variable_set [here](http://ruby-doc.org/core-2.2.1/Object.html#method-i-instance_variable_set),
+
+Now, once you start using entities, you’re going to end up with more than one.  For that reason, it’s a good good idea to have a mixin that takes care of common behavior.  In the example below, we can see that the entity includes a EntityMethods mixin.
+
+{% highlight ruby %}
+
+  module Entity
+	 User = Struct.new(
+        :id,
+        :last_name,
+				:first_name,
+				:email
+      ) do
+
+      include EntityMethods
+
+    end
+  end
+
+
+{% endhighlight %}
+
+Here’s an example of what that EntityMethods mixin might looks like.  It’s nothing fancy.  It setups up an initialize method that looks like just about any initialize method you’d find in a n abstract entity.
+
+{% highlight ruby %}
+
+  module Entity
+    module EntityMethods
+
+      def initialize(from_hash)
+        super(*from_hash.values_at(*members))
+      end
+
+    end
+  end
+
+{% endhighlight %}
+
+
+One of the benefits of this approach is that it becomes very easy to add behavior in the mixin and have that bevavior cascade into all the entities that use the mixin.  For instance, let’s say that we want to create a simple “to_h” method for marshalling instances of the entity into a hash.  Here’s how we would do it. 
+
+{% highlight ruby %}
+
+  module Entity
+    module EntityMethods
+      def initialize(from_hash)
+        super(*from_hash.values_at(*members))
+      end
+
+      def to_h
+        {}.tap do |hash|
+          each_pair do |key, value|
+            hash[key] = value
+          end
+        end
+      end
+    end
+  end
+
+{% endhighlight %}
+
+
+With minimal effort, we just made our entities a bunch more flexible and user-friendly.
+
+##Conclusion
+
+Design patterns can be intimidating.  They can seem strange and complicated.  But even a pattern with a vague sounding name like “abstract entity” pattern is simple at its heart.  Why do we use the entity pattern?  Because we want to control the behavior of  objects in our domain, rather than ceding control to an ORM.  And what do entities do?  They define the behavior an object and provide us a means to access the attributes of that object.  ]
+
+There are many different ways to create an entity, but at the heart of it, all entities are very basic.  Each entity is just a “thing” and we decide what people can say about that thing. Does the User thing have an email?  Does it have a first_name?  Other parts of our software will request this type of information and our entity is capable of handling those requests.
