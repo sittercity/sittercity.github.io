@@ -23,7 +23,6 @@ $grey-color-dark:  darken($grey-color, 25%);
 
 // Width of the content area
 $content-width:    800px;
-$header-width:	   900px;
 
 $on-palm:          600px;
 $on-laptop:        800px;
@@ -50,5 +49,5 @@ $on-laptop:        800px;
         "base",
         "layout",
         "syntax-highlighting",
-        "ascii-border"
+		"sittercity"
 ;

@@ -1,0 +1,53 @@
+.site-header {
+	border-top: none;
+	border-bottom: none;
+
+	pre {
+		font-size: 14px;
+		background: none;
+		border: none;
+		padding: 0;
+		margin: 0;
+		line-height: 1em;
+        overflow: hidden;
+		letter-spacing: -1px;
+    }
+}
+
+.site-title {
+	font-size: 14px;
+	line-height: 1em;
+	letter-spacing: -1px;
+	float: none;
+
+	&:hover {
+        text-decoration: none;
+        color: #000;
+    }
+}
+
+.page-content {
+	p {
+		font-family: 'Book Antiqua', serif;
+		font-size: 16px;
+	}
+
+    pre {
+		background: #eee;
+		border-radius: 0;
+	}
+
+	code {
+		background: none;
+	}
+}
+
+.ascii-border {
+	font-size: 14px;
+	background: none;
+	border: none;
+	padding: 0;
+	margin: 0;
+	line-height: 1em;
+	overflow: hidden;
+}

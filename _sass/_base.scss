@@ -170,16 +170,6 @@ pre {
     }
 }
 
-.header-wrapper {
-    max-width: -webkit-calc(#{$header-width} - (#{$spacing-unit} * 2));
-    max-width:         calc(#{$header-width} - (#{$spacing-unit} * 2));
-
-    @include media-query($on-laptop) {    
-        max-width: -webkit-calc(#{$header-width} - (#{$spacing-unit}));
-        max-width:         calc(#{$header-width} - (#{$spacing-unit}));
-    }
-}
-
 
 /**
  * Clearfix
