@@ -5,33 +5,47 @@ layout: default
 <div class="home">
 	<ul class="post-list">
 		{% for post in paginator.posts %}
-      <li>
-        <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
 
-        <h2>
-          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-        </h2>
-		<section>
-			{{ post.content }}
-		</section>
-      </li>
-    {% endfor %}
+			{% for author in site.authors %}
+				{% if author[0] == post.author %}
+					{% assign github_account = author[1].github %}
+				{% endif %}
+			{% endfor %}
+
+      		<li class="post">
+	        	<h2>
+	          		<a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+	        	</h2>
+	        	<span class="post-meta">
+		        	Authored by  
+		        	{% if post.author %}
+		        		{% if github_account %}
+		        			<a href="http://github.com/{{github_account}}" target="_blank">{{ post.author }}</a>
+	        			{% else %}
+	        				{{ post.author }}
+	        			{% endif %}
+		        	{% endif %}
+
+		        	{% if post.meta %} • {{ post.meta }}{% endif %}<br/>
+		        	on {{ post.date | date: "%b %-d, %Y" }}
+		        </span>
+				<section class="post-content">
+					{{ post.content }}
+				</section>
+	    	</li>
+	   	{% endfor %}
   </ul>
 
   <div class="pagination">
 		{% if paginator.previous_page %}
 			<a href="{{ paginator.previous_page_path }}" class="previous">Previous</a>
-		{% else %}
-			<span class="previous">Previous</span>
 		{% endif %}
-			<span class="page_number ">Page: {{ paginator.page }} of {{ paginator.total_pages }}</span>
+
+		<span class="page_number ">Page: {{ paginator.page }} of {{ paginator.total_pages }}</span>
+
 		{% if paginator.next_page %}
 			<a href="{{ paginator.next_page_path }}" class="next">Next</a>
-		{% else %}
-			<span class="next ">Next</span>
 		{% endif %}
 	</div>
-
-  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
 
 </div>

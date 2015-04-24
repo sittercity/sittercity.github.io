@@ -2,13 +2,31 @@
 layout: default
 ---
 <div class="post">
+	{% for author in site.authors %}
+		{% if author[0] == page.author %}
+			{% assign github_account = author[1].github %}
+		{% endif %}
+	{% endfor %}
 
-  <header class="post-header">
-    <h1 class="post-title">{{ page.title }}</h1>
-    <p class="post-meta">{{ page.date | date: "%b %-d, %Y" }}{% if page.author %} • {{ page.author }}{% endif %}{% if page.meta %} • {{ page.meta }}{% endif %}</p>
-  </header>
 
-  <article class="post-content">
-    {{ content }}
-  </article>
+	<header class="post-header">
+		<h2 class="post-title">{{ page.title }}</h2>
+		<span class="post-meta">
+	    	Authored by  
+	    	{% if page.author %}
+	    		{% if github_account %}
+	    			<a href="http://github.com/{{github_account}}" target="_blank">{{ page.author }}</a>
+				{% else %}
+					{{ page.author }}
+				{% endif %}
+	    	{% endif %}
+
+	    	{% if page.meta %} • {{ page.meta }}{% endif %}<br/>
+	    	on {{ page.date | date: "%b %-d, %Y" }}
+	    </span>
+	</header>
+
+	<article class="post-content">
+		{{ content }}
+	</article>
 </div>
