@@ -1,9 +1,5 @@
 $on-tablet: 750px;
 
-h1.post-title {
-	font-size: 24px;
-}
-
 .site-header {
 	border-top: none;
 	border-bottom: none;
@@ -44,6 +40,13 @@ h1.post-title {
     }
 }
 
+.post-title,
+.post-title a {
+	font-size: 30px;
+	color: #0516af; 
+	text-decoration: underline;
+}
+
 .site-title {
 	font-size: 14px;
 	line-height: 1em;
@@ -64,16 +67,13 @@ h1.post-title {
 	}
 }
 
+li.post {
+	margin-bottom: 150px;
+}
+
 .page-content {
-
-	.post-title {
-		color: #0516af;
-		font-size: 24px;
-	}
-
 	.post-content {
 		margin-top: 20px;
-		margin-bottom: 100px;
 
 		h1, h2, h3, h4, h5, h6 {
 			color: #1aa6b1;
@@ -83,11 +83,28 @@ h1.post-title {
 			margin-top: 50px;
 		}
 
-		h4 {
-			margin-top: 30px;
+		h2 {
+			font-size: 20px;
+			@include media-query($on-laptop) {
+				font-size: 20px;
+			}
 		}
 
-		p, ul {
+		h3 {
+			font-size: 20px;
+			@include media-query($on-laptop) {
+				font-size: 20px;
+			}
+		}
+
+		h4 {
+			margin-top: 20px;
+			@include media-query($on-laptop) {
+				font-size: 20px;
+			}
+		}
+
+		p, ul, li {
 			font-family: 'Crimson Text', serif;
 			font-size: 18px;
 
@@ -112,29 +129,28 @@ h1.post-title {
 
 .footer-col-wrapper {
 
-	.footer-col-desription {
-		width: 50%;
-		float: right;
-
-		@include media-query($on-palm) {
-			width: 100%;
-			float: none;
-		}
-	}
+	text-align: center;
 
 	.footer-col-links {
-		width: 40%;
-		float: left;
+		float: none;
+	}
+}
 
-		@include media-query($on-palm) {
-			width: 100%;
-			float: none;
+.social-media-list {
+	li {
+		display: inline;
+		text-align: center;
+		&:after {
+			content: '/';
+		}
+		&:last-child:after {
+			content: '';
 		}
 	}
+}
 
-	.username.no-icon {
-		margin-left: 25px;
-	}
+.pagination {
+	text-align: center;
 }
 
 .ascii-border {

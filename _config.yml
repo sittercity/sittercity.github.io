@@ -18,6 +18,8 @@ pages_list:
 # Build settings
 markdown: kramdown
 
+permalink: "/:title" # only make routes
+
 paginate: 5
 paginate_path: "/page/:num/"
 

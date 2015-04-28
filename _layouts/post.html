@@ -29,4 +29,8 @@ layout: default
 	<article class="post-content">
 		{{ content }}
 	</article>
+
+	{% if page.categories %}
+		<span class="post-meta categories">{{ page.categories }}</span>
+	{% endif %}
 </div>
