@@ -43,8 +43,8 @@ $on-tablet: 750px;
 .post-title,
 .post-title a {
 	font-size: 30px;
-	color: #0516af; 
-	text-decoration: underline;
+	color: #000; 
+	padding-bottom: 5px;
 }
 
 .site-title {
@@ -76,7 +76,7 @@ li.post {
 		margin-top: 20px;
 
 		h1, h2, h3, h4, h5, h6 {
-			color: #1aa6b1;
+			color: #000;
 		}
 
 		h1, h2, h3 {
@@ -111,7 +111,7 @@ li.post {
 			a:link,
 			a:visited,
 			a:active {
-				color: #17a41a;
+				color: #1aa6b1;
 			}
 		}
 	}
