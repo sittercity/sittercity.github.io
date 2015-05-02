@@ -30,7 +30,11 @@ layout: default
 		        	on {{ post.date | date: "%b %-d, %Y" }}
 		        </span>
 				<section class="post-content">
-					{{ post.excerpt }}
+          {{ post.excerpt }}
+
+          {% if post.content contains site.excerpt_separator %}
+            <a href="{{ post.url | prepend: site.baseurl }}">Continue article ...</a>
+          {% endif %}
 				</section>
 
 				{% if post.categories %}

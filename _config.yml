@@ -10,6 +10,8 @@ twitter_username: sittercitytech
 github_username:  sittercity
 port: 8080
 
+excerpt_separator: <!-- More -->
+
 pages_list:
   About: '/about'
   Archive: '/archive'
