@@ -17,7 +17,7 @@ layout: default
 						<h2 class="post-title">{{ post.title }}</h2>
 				</a>
 	        	<span class="post-meta">
-		        	Authored by  
+		        	Authored by
 		        	{% if post.author %}
 		        		{% if github_account %}
 		        			<a href="http://github.com/{{github_account}}" target="_blank">{{ post.author }}</a>
@@ -30,7 +30,7 @@ layout: default
 		        	on {{ post.date | date: "%b %-d, %Y" }}
 		        </span>
 				<section class="post-content">
-					{{ post.content }}
+					{{ post.excerpt }}
 				</section>
 
 				{% if post.categories %}
