@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Flagon - An Agnostic Feature Flag Gem"
-date:   2015-05-04 9:00:00
+date:   2015-05-04 9:30:00
 categories: ruby
 author: "Jonathan Fantham"
 ---
@@ -16,9 +16,12 @@ Imagine you are developing a particularly risky piece of code. Your client has a
 
 This is a common scenario that many software engineers have encountered before and many more will encounter in the future, these switches we use to turn features on and off are often called feature flags.
 
+
 ## Okay, but there are other feature flag gems. What's so special about Flagon?
 
 Before developing a new gem, it would be silly not to check if the problem had already been solved by some other nice person. However, upon looking for something to fill our gap, we discovered that there were not a lot of choices out there that deal with this problem in a flexible way. Most are tied to active record or another single type of storage, and while this may be convenient because you're already in the database most of the time, it doesn't comply with the ideals of the [12 Factor App](http://12factor.net/) by storing settings in environment variables, and lets face it, for development and testing something a lot simpler could be used to define flags that doesn't involve database migrations, like a hash.
+
+<!-- More -->
 
 Having said that, I'm not going to waggle my finger at you and tell you you're doing it wrong. If you want to use the database for feature flags in some cases, so be it! You can. Flagon allows any storage mechanism if you care to extend it.
 
