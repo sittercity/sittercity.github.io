@@ -3,21 +3,55 @@ layout: default
 ---
 
 <div class="home">
+	<ul class="post-list">
+		{% for post in paginator.posts %}
 
-  <h1 class="page-heading">Posts</h1>
+			{% for author in site.authors %}
+				{% if author[0] == post.author %}
+					{% assign github_account = author[1].github %}
+				{% endif %}
+			{% endfor %}
 
-  <ul class="post-list">
-    {% for post in site.posts limit:7 %}
-      <li>
-        <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+			<li class="post">
+				<a href="{{ post.url | prepend: site.baseurl }}">
+						<h2 class="post-title">{{ post.title }}</h2>
+				</a>
+	        	<span class="post-meta">
+		        	Authored by  
+		        	{% if post.author %}
+		        		{% if github_account %}
+		        			<a href="http://github.com/{{github_account}}" target="_blank">{{ post.author }}</a>
+	        			{% else %}
+	        				{{ post.author }}
+	        			{% endif %}
+		        	{% endif %}
 
-        <h2>
-          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-        </h2>
-      </li>
-    {% endfor %}
+		        	{% if post.meta %} • {{ post.meta }}{% endif %}<br/>
+		        	on {{ post.date | date: "%b %-d, %Y" }}
+		        </span>
+				<section class="post-content">
+					{{ post.content }}
+				</section>
+
+				{% if post.categories %}
+					<span class="post-meta categories">Categories: {{ post.categories }}</span>
+				{% endif %}
+	    	</li>
+	   	{% endfor %}
   </ul>
 
-  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
+  <div class="pagination">
+	{% if paginator.previous_page %}
+		<a href="{{ paginator.previous_page_path }}" class="previous">
+			<< Previous
+		</a>
+	{% endif %}
 
+	<span class="page_number ">{{ paginator.page }} of {{ paginator.total_pages }}</span>
+
+	{% if paginator.next_page %}
+		<a href="{{ paginator.next_page_path }}" class="next">Next >>
+	</a>
+	{% endif %}
+	</div>
 </div>

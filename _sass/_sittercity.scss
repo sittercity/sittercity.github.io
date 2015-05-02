@@ -1,0 +1,164 @@
+$on-tablet: 750px;
+
+.site-header {
+	border-top: none;
+	border-bottom: none;
+
+	margin-top: 25px;
+
+	pre {
+		background: none;
+		border: none;
+		padding: 0;
+		margin: 0;
+		line-height: 12px;
+        overflow: hidden;
+		letter-spacing: -1px;
+		font-size: 14px;
+		line-height: 12px;
+    }
+
+    .site-logo {
+    	display: none;
+    }
+
+	@include media-query($on-tablet) {
+		pre {
+    		display: none;
+    	}
+
+    	.site-logo {
+    		display: block;
+    	}
+    }
+
+    @include media-query($on-palm) {
+    	.site-nav {
+    		top: -55px;
+    		right: 0;
+    	}
+    }
+}
+
+.post-title,
+.post-title a {
+	font-size: 30px;
+	color: #000; 
+	padding-bottom: 5px;
+}
+
+.site-title {
+	font-size: 14px;
+	line-height: 1em;
+	letter-spacing: -1px;
+	float: none;
+
+	&:hover {
+        text-decoration: none;
+        color: #000;
+    }
+}
+
+.site-nav {
+	@include media-query($on-palm) {
+		top: -53px;
+		right: -20px;
+		border: none;
+	}
+}
+
+li.post {
+	margin-bottom: 150px;
+}
+
+.page-content {
+	.post-content {
+		margin-top: 20px;
+
+		h1, h2, h3, h4, h5, h6 {
+			color: #000;
+		}
+
+		h1, h2, h3 {
+			margin-top: 50px;
+		}
+
+		h2 {
+			font-size: 20px;
+			@include media-query($on-laptop) {
+				font-size: 20px;
+			}
+		}
+
+		h3 {
+			font-size: 20px;
+			@include media-query($on-laptop) {
+				font-size: 20px;
+			}
+		}
+
+		h4 {
+			margin-top: 20px;
+			@include media-query($on-laptop) {
+				font-size: 20px;
+			}
+		}
+
+		p, ul, li {
+			font-family: 'Crimson Text', serif;
+			font-size: 18px;
+
+			a:link,
+			a:visited,
+			a:active {
+				color: #1aa6b1;
+			}
+		}
+	}
+
+    pre {
+		background: #fff;
+		border: 2px solid #888;
+		border-radius: 0;
+	}
+
+	code {
+		background: none;
+	}
+}
+
+.footer-col-wrapper {
+
+	text-align: center;
+
+	.footer-col-links {
+		float: none;
+	}
+}
+
+.social-media-list {
+	li {
+		display: inline;
+		text-align: center;
+		&:after {
+			content: '/';
+		}
+		&:last-child:after {
+			content: '';
+		}
+	}
+}
+
+.pagination {
+	text-align: center;
+}
+
+.ascii-border {
+	font-size: 14px;
+	background: none;
+	border: none;
+	padding: 0;
+	margin: 0;
+	line-height: 1em;
+	overflow: hidden;
+}

@@ -17,3 +17,36 @@ pages_list:
 
 # Build settings
 markdown: kramdown
+
+permalink: "/:title" # only make routes
+
+paginate: 5
+paginate_path: "/page/:num/"
+
+authors:
+  Phil Trimble:
+    github: ptrimble
+  Bob Vonderau:
+    github: ravenduo
+  Kelsey Mok:
+    github: kelseymok
+  Jazmin Schroeder:
+    github: jazminschroeder
+  Ryan Messner:
+    github: rpmessner
+  Sam De Freyssinet:
+    github: samsoir
+  Shane Gibbs:
+    github: shanegibbs
+  Jeremy Bush:
+    github: zombor
+  Edwin Mourant:
+    github: emourant
+  Ben Downey:
+    github: bnd5k
+  Jonathan Fantham:
+    github: jonathan-fantham
+  Chris Bandy:
+    github: cbandy
+  Eleanor Lee:
+    github: ellie007
