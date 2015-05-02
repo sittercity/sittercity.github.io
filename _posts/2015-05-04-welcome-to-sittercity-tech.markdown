@@ -24,8 +24,6 @@ at the moment and most of our engineers consider themselves rubyists. [Ruby on R
 but we have evolved into a true polyglot shop over the last few months, with [Golang](http://golang.org) making a large impact on our internal ecosystem. We're moving away from
 a large-scale rails project and into the world of microservices. Definitely look for more on this front.
 
-<!-- More -->
-
 On the Operations side we are an AWS shop and are quickly transitioning into the world of [LXC](https://linuxcontainers.org/), which has a huge impact on
 how we develop and deliver projects in the future.
 
