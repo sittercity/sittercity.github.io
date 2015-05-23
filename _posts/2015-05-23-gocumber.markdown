@@ -1,9 +1,8 @@
 ---
 layout: post
 title:  "Gocumber"
-date:   2015-02-20 09:00:00
+date:   2015-05-23 12:00:00
 categories: golang
-comments: true
 author: "Phil Trimble"
 ---
 
@@ -12,6 +11,8 @@ This month Sittercity Tech has released a new project on GitHub: [gocumber!](htt
 So what is gocumber (besides a goofy name)? Gocumber is a package written in Go that is used for **parsing and executing [Gherkin](https://cukes.info/gherkin.html)**. It was created while we were writing our first Go service here at Sittercity. Perhaps unsurprisingly based on its name it is an attempt to build a Cucumber-like tool for Go.
 
 To understand why it was necessary it will help to understand a bit about how we develop.
+
+<!-- More -->
 
 ## Why do we need this?
 Sittercity is a very opinionated [TDD](http://en.wikipedia.org/wiki/Test-driven_development "Test-Driven Development") shop. We believe very strongly in the test-first mantra. What this means in practice while developing a project is: 
@@ -77,13 +78,13 @@ You can see a more complete example in our [git repository](https://github.com/s
 Now we have a gherkin tool to execute our tests! We were off and running. We've successfully implemented our first Golang project and are spinning up a few more. In the near future we'll be rolling this tool into multiple projects, following much the same pattern as above.
 
 ## What's missing?
-So now that the tool is available where do we go from here? Well, we have a few missing pieces of functionality that we have not yet needed to use internally and so have not implemented, such as:
+So now that the tool is available where do we go from here? Well, we have a few missing pieces of functionality that we have not yet needed to use internally and so have not implemented. The main things that we are looking to add:
 
-1. Does not process Gherkin backgrounds
-1. Only performs variable replacement using data tables in outlines, not in text (like json)
+1. We currently rely on the standard Go `test` framework to execute the tests. We would like to have a purpose-built feature runner like `cucumber` is for ruby.
+2. Error display is still a bit rough. Sure, it catches the errors but it can be difficult to visually parse what is going wrong.
 
-We plan to add in these features as we encounter situations that require them in our upcoming internal projects. But we strongly believe in only engineering a solution when the need arises so we're not in any rush.
+We plan to continue adding to the project but we strongly believe in only engineering a solution when the need arises so we're not in any rush.
 
 We would love to hear feedback! Feel free to file issues and/or provide PRs to add functionality.
 
-P.S. - I don't remember how we came up with this terrible name. I imagine it was said as a joke at first but then stuck. You're welcome!
+P.S. - I don't remember how we came up with this terrible name. I imagine it was said as a joke at first but then stuck!
