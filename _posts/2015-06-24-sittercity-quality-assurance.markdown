@@ -1,9 +1,8 @@
 ---
 layout: post
 title:  "Sittercity Quality Assurance"
-date:   2015-02-10 03:45:22
+date:   2015-06-24 11:00:00
 categories: qa
-comments: true
 author: "Bob Vonderau"
 ---
 ![Sittercity QA](/assets/sittercity_qa_logo.png)
