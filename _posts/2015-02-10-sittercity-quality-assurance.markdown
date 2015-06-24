@@ -53,14 +53,13 @@ We are able to accomplish all of this with a variety of tools and processes.
 ![Sittercity QA](/assets/qa_tools.jpg)
 
  - [Cucumber](https://cukes.info/) has been an excellent acceptance criteria framework used across our product and development teams to describe desired functionality.  These are easily translated into unit and full stack acceptance tests that the development and QA team can build and maintain.
- - [Calabash](http://calaba.sh/) is used for our automated mobile testing.  It can be used across iOS and Android platforms.  It is tightly integrated with Cucumber.
+ - [Calabash](http://calaba.sh/) and [Appium](appium.io) are used for our automated mobile testing.  They can be used across iOS and Android platforms.  They are tightly integrated with Cucumber.
  - [WatirWebdriver](http://watirwebdriver.com/) is the engine behind our full stack Cucumber tests.  WatirWebdriver allows our tests to run in actual browsers, locally or using cloud based virtual machines.
- - [BrowserStack](www.browserstack.com) is used to run our regression test suite in parallel, against many different browsers simultaneously.  This allows us to speed up testing by running multiple test scenarios against different browers at the same time.
- - [Applitools](https://applitools.com/) is a new tool in our testing arsenel.  This allows us to do machine based UI testing, allowing us to test pixel level differences between pages.  QA engineers no longer have to manually inspect each page, on every release.
+ - [Applitools](https://applitools.com/) is a new tool in our testing arsenal.  This allows us to do machine based UI testing, allowing us to test pixel level differences between pages.  QA engineers no longer have to manually inspect each page, on every release.
 
 ### Typical Day:
 
-Having all of these new processes and tools at our disposal allows the QA team members to be exposed to lots of different projects, technologies and opportunities each day.  
+Having all of these processes and tools at our disposal allows the QA team members to be exposed to lots of different projects, technologies and opportunities each day.  
 
 A typical day can be broken down into the following:
 
@@ -68,7 +67,7 @@ A typical day can be broken down into the following:
 
 ## Future
 
-Just as the Sittercity Tech Team uses cutting edge technologies, the QA team must keep pace ensuring all of Sittercity's systems are fully operational, production ready and as bug free as possible.  
+Just as the Sittercity Tech Team uses cutting edge technologies, the QA team must keep pace, ensuring all of Sittercity's systems are fully operational, production ready and as bug free as possible.  
 
 As we continue to grow and adapt, we look forward to the following:
 
