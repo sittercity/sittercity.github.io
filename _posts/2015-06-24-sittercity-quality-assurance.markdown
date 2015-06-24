@@ -11,6 +11,8 @@ Over the past several years, the QA team at Sittercity has gone through a drasti
 
 This post will take you through the journey of the QA team throughout the past few years, and outline where we plan to go in the future.
 
+<!-- More -->
+
 ## Past
 
 As of 2010, nearly all of the testing done by the QA team at Sittercity was done manually.  We had a few unreliable [Selenium IDE](http://www.seleniumhq.org/projects/ide/) scripts, that only help test a few scenarios.  This was not ideal, as manually testing all new features as well as manually regression testing before each release became very time consuming and could lead to delays in releasing if any last minute issues were found.  
