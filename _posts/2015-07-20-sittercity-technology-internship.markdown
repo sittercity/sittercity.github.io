@@ -8,6 +8,8 @@ categories: technology
 
 I have had the pleasure over the past three months of being Sittercity's first technology intern. It has been an exciting and wild ride; full of fun and learning!
 
+<!-- More -->
+
 When I was first started I worked on a small project that likens to a toolbelt. The Public API Toolbelt communicates with Sittercity's Public API, a place for third-parties to interact with our data. My part was to write some code that made it easier (less commands) to communicate with this data. The current project I am working on is a new product called DateNight. DateNight is Sittercity’s new way to find, book and pay sitters by connecting you with a curated group of sitters guaranteed to be available on weekend nights!
 
 Here at Sittercity they use a lot of design patterns. The wikipedia definition of a design pattern is a general reusable solution to a commonly occurring problem within a given context in software design. I think the biggest technical achievement I have made during my internship is understanding and making use of design patterns in my code.
