@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  'Make "IT" happen'
-date:   2015-05-06 21:00:00
+date:   2015-09-03 09:00:00
 categories: women, technology
 author: "Jazmin Schroeder"
 ---
@@ -9,6 +9,8 @@ author: "Jazmin Schroeder"
 As a woman in technology I want to speak to women. I want to speak not from a position of weakness, but from a position of possibility. I want to speak to any of you who at some point believed that their possibilities were limited. I want to tell you, “You can make IT happen.”
 
 ![Sittercity QA](/assets/img/Make-It-Happen.jpg)
+
+<!-- More -->
 
 # My story
 I started my career in Software working for a startup in Mexico(my home country), although I was very excited for the opportunity I was also terrified. When I met the rest of the team my fears did not go away, quite the contrary. 
