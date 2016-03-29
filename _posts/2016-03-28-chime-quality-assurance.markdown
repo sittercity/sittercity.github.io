@@ -11,8 +11,6 @@ So far, 2016 has been a great year. Our small, but rockstar, QA team has been ma
 
 As Bob V. stated in the last QA post, we have made a lot of changes. The last few years the QA department has accomplished a lot. What would take the QA team days to accomplish can now occur daily. In the past, if there were bugs, the release would have to wait until the next week because of the regression feedback loop. Now, for our newest product [Chime](https://hellochime.com) we deliver to prod multiple times a day, up to every 20 minutes for the varying underlying services. It is obviously not just QA's effort that has made this possible though; it has been a team effort across all departments (Development, Devops, and QA). Any company can accomplish continuous delivery if they have a determined team that can work well with one another.
 
-<!-- More -->
-
 ## Deciding what tools to use for Chime
 
 The newest Sittercity product, Chime, gave the QA team the opportunity to really work towards improving automation. There are many automation tools available. The foundational code a site uses will factor into what option is most appropriate. We primarily use ruby but also have a lot of different languages used in various projects. These may not work specifically for you, but they have met our needs so far: Watir, Cucumber, Appium, Applitools, and Jenkins.
