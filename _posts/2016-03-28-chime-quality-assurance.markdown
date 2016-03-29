@@ -31,7 +31,7 @@ Eyes_selenium is a gem by [Applitools](https://applitools.com/). This allows us 
 
 ### Jenkins
 
-We utilize Jenkins to its full extent to a QA team. It allows seamless continuous integration. Thanks to Jenkins we can automatically kick off automated regression suites for specific parts of our apps upon being deployed to an environment. QA is not required to start and monitor a build every time a deploy is done, which is awesome. The results of the suites are automatically messaged into chat rooms so everyone is aware when releases can continue to go out (or not). This allows QA to focus on more automation and do more exploratory testing of the app (which, in my opinion, is the end goal of all QA teams).
+We utilize Jenkins to its full extent to our QA team. It allows seamless continuous integration. Thanks to Jenkins we can automatically kick off automated regression suites for specific parts of our apps upon being deployed to an environment. QA is not required to start and monitor a build every time a deploy is done, which is awesome. The results of the suites are automatically messaged into chat rooms so everyone is aware when releases can continue to go out (or not). This allows QA to focus on more automation and do more exploratory testing of the app (which, in my opinion, is the end goal of all QA teams).
 
 ## Automate all the things!
 
