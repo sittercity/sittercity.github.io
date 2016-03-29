@@ -42,6 +42,7 @@ By leveraging these tools together. Along with [parallelizing](https://github.co
  - Run thousands of tests on a daily basis.
  - Have drastically reduced regression suite running times.
  - Continuously improving/refactoring the automation suites.
+ - Make sure to leave time for ping pong
 
 Over the past year we have made many improvements, especially in automation, but know there is still a lot to accomplish. These goals have been reached through hard work and dedication.  Fortunately for me, it hardly feels like work when you enjoy what you do.
 
