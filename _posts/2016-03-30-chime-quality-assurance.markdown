@@ -1,13 +1,15 @@
 ---
 layout: post
 title:  "QA Automation on Chime"
-date:   2016-03-28 11:00:00
+date:   2016-03-30 15:00:00
 categories: qa
 author: "Nick Fagen"
 ---
 ![Sittercity QA](/assets/sittercity_qa_logo.png)
 
 So far, 2016 has been a great year. Our small, but rockstar, QA team has been making huge strides towards improving automated regression suites across all of our projects. We have tackled the endless QA dilemma regarding automation, how to do it effectively and efficiently. There are always obstacles when automating any app. For example, let's say you have a new release and bug fixes ready to ship. How will you ensure that the new bug fix(es) have not introduced any new issues in previous working functionality? Manually testing all of the functionality of an application for every single fix or new feature is an option when a project is just starting.  However, as a project grows, large manual test regression plans are daunting and in my opinion a red flag. With larger regression plans you might be able to accomplish it, but then you are not going to be testing effectively in terms of company cost, resources, time, etc. More and more companies are trying to move toward continuous delivery, making a need for QA automation.
+
+<!-- More -->
 
 As Bob V. stated in the [last QA post](http://tech.sittercity.io/articles/2015/06/24/sittercity-quality-assurance), we have made a lot of changes. The last few years the QA department has accomplished a lot. What would take the QA team days to accomplish can now occur daily. In the past, if there were bugs, the release would have to wait until the next week because of the regression feedback loop. Now, for our newest product [Chime](https://hellochime.com) we deliver to prod multiple times a day, up to every 20 minutes for the varying underlying services. It is obviously not just QA's effort that has made this possible though; it has been a team effort across all departments (Development, Devops, and QA). Any company can accomplish continuous delivery if they have a determined team that can work well with one another.
 
