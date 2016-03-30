@@ -27,7 +27,7 @@ Cucumber (and the Gherkin DSL) has many benefits for us, chief among them being 
 This combination allows us to automate the testing of our web app and at the same time make the features easily readable to stakeholders, without any layers of abstraction. It's win-win-win for all involved.
 
 ### Appium
-We have decided to try [Appium](http://www.appium.com) for our automated mobile testing. Appium lets us automate our app as a user would. Actually registering users and performing actions and on REAL devices. We use Calabash-iOS and Calabash-Android for our other mobile apps. However, we have run into issues with them not being maintained for our needs in certain instances. This was why we decided to take a look at Appium. So far it's working well. We are looking forward to learning more about this tool and what opportunities it can provide for us.
+We have decided to try [Appium](http://www.appium.com) for our automated mobile testing. Appium lets us automate our app as a user would actually use it. Actually registering users and performing actions and on REAL devices. We use Calabash-iOS and Calabash-Android for our other mobile apps. However, we have run into issues with them not being maintained for our needs in certain instances. This was why we decided to take a look at Appium. So far it's working well. We are looking forward to learning more about this tool and what opportunities it can provide for us.
 
 ### Applitools
 
