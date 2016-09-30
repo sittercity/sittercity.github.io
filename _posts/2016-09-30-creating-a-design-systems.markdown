@@ -2,7 +2,7 @@
 layout: post
 title:  "Creating A Design System"
 author: "Byonca Honaker"
-date:   2016-07-26 15:00:00
+date:   2016-09-30 12:00:00
 categories: technology
 ---
 
