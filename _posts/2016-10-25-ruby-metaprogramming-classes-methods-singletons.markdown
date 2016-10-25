@@ -283,7 +283,7 @@ class Wat
 end
 {% endhighlight %}
 
-Can you guess where the `attr_accessor` common class method and our own `bar` and `baz` class method are stored? Well, `attr_accessor` should be easy. We already know that every class is an instance of `Class`, and `self` in a class definition block points to the class being defined. Since `attr_accessor` is present on every class object, it must be an instance method of `Class` (turns out it’s a private one):
+Can you guess where the `attr_accessor` common class method and our own `bar` and `baz` class methods are stored? Well, `attr_accessor` should be easy. We already know that every class is an instance of `Class`, and `self` in a class definition block points to the class being defined. Since `attr_accessor` is present on every class object, it must be an instance method of `Class` (turns out it’s a private one):
 
 {% highlight ruby %}
 Class.private_instance_methods.include?(:attr_accessor)
