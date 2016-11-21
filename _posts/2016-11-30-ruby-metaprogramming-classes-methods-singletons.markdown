@@ -2,7 +2,7 @@
 layout: post
 title:  "Ruby Metaprogramming: Classes, Methods and Singleton Classes"
 author: "Máté Solymosi"
-date:   2016-10-25 12:00:00
+date:   2016-11-30 12:00:00
 categories: technology
 ---
 
